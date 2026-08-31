@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vesserith.xyz/schemas/public-evidence-v1.json",
+  "title": "Vesserith public evidence envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "producer",
+    "source",
+    "generatedAt",
+    "generatorVersion",
+    "claims",
+    "artifacts",
+    "redactions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "https://vesserith.xyz/schemas/public-evidence-v1.json"
+    },
+    "producer": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "generatorVersion": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "statement", "state", "observedAt", "evidenceRefs"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "statement": { "type": "string", "minLength": 1 },
+          "state": {
+            "enum": ["observed", "operator-recorded", "inferred", "unavailable"]
+          },
+          "observedAt": {
+            "anyOf": [
+              { "type": "null" },
+              { "type": "string", "format": "date-time" }
+            ]
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "sha256", "mediaType"],
+        "properties": {
+          "uri": { "type": "string", "format": "uri" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "mediaType": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "redactions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied", "policy"],
+      "properties": {
+        "applied": { "type": "boolean" },
+        "policy": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
