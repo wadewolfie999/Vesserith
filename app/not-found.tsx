@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { publicationPath } from '@/lib/publication-path';
 
 export default function NotFound() {
   return (
@@ -11,12 +11,12 @@ export default function NotFound() {
         <p className="mt-4 leading-7 text-muted-foreground">
           Vesserith does not infer or invent missing project surfaces.
         </p>
-        <Link
-          href="/"
+        <a
+          href={publicationPath('/')}
           className="mt-8 inline-flex rounded-full bg-cyan-950 px-5 py-3 text-sm font-medium text-white hover:bg-cyan-900"
         >
           Return to the ecosystem map
-        </Link>
+        </a>
       </div>
     </main>
   );

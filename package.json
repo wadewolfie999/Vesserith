@@ -9,10 +9,13 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:pages": "node scripts/build-pages.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "validate:registry": "node --experimental-strip-types scripts/validate-registry.ts",
+    "refresh:github": "node scripts/refresh-github-status.mjs",
     "verify:public": "node scripts/check-public-surface.mjs",
+    "verify:pages": "node scripts/verify-pages-artifact.mjs",
     "smoke": "node scripts/smoke-site.mjs",
     "lint": "oxlint",
     "format": "oxfmt"

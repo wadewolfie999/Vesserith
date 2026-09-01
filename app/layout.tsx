@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import './globals.css';
+import { publicationPath } from '@/lib/publication-path';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({
@@ -16,6 +17,7 @@ const runtimeEnvironment = (
 const metadataBase = new URL(
   runtimeEnvironment?.VESSERITH_PUBLIC_ORIGIN ?? 'http://localhost:3000',
 );
+const socialImagePath = publicationPath('/og.png');
 
 export const metadata: Metadata = {
   metadataBase,
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og.png',
+        url: socialImagePath,
         width: 1200,
         height: 630,
         alt: 'Vesserith — One namespace. Independent systems.',
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
     title: 'Vesserith — One namespace, independent systems',
     description:
       'A public map of what is implemented, what is documented, and what remains a hypothesis.',
-    images: ['/og.png'],
+    images: [socialImagePath],
   },
 };
 

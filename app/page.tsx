@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -8,6 +7,7 @@ import {
   Globe2,
   Layers3,
   Orbit,
+  RefreshCw,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +25,8 @@ import {
   statusTone,
 } from '@/lib/registry';
 import { cn } from '@/lib/utils';
+import { githubStateLabel, githubStatus } from '@/lib/github-status';
+import { publicationPath } from '@/lib/publication-path';
 
 function StatusBadge({ label, tone }: { label: string; tone: string }) {
   return (
@@ -44,15 +46,15 @@ export default function Home() {
           aria-label="Primary navigation"
           className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-8"
         >
-          <Link
-            href="/"
+          <a
+            href={publicationPath('/')}
             className="flex items-center gap-3 font-semibold tracking-tight"
           >
             <span className="grid size-9 place-items-center rounded-xl border border-cyan-900/15 bg-cyan-950 text-sm font-bold text-white shadow-[0_8px_24px_rgb(8_47_73/16%)]">
               V
             </span>
             <span>Vesserith</span>
-          </Link>
+          </a>
           <div className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
             <a
               className="transition-colors hover:text-foreground"
@@ -146,6 +148,66 @@ export default function Home() {
       </section>
 
       <section
+        id="freshness"
+        aria-labelledby="freshness-title"
+        className="relative mx-auto max-w-7xl px-5 pb-24 sm:px-8"
+      >
+        <div className="rounded-2xl border border-cyan-950/10 bg-white/75 p-6 shadow-sm sm:p-8">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="eyebrow">
+                Derived GitHub snapshot · non-authoritative
+              </p>
+              <h2
+                id="freshness-title"
+                className="mt-3 text-2xl font-semibold tracking-tight text-cyan-950 sm:text-3xl"
+              >
+                Freshness without moving the evidence baseline.
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-muted-foreground">
+              Refreshed during publication. A failed lookup leaves the reviewed,
+              commit-pinned registry intact.
+            </p>
+          </div>
+          <div className="mt-7 grid gap-3 md:grid-cols-3">
+            {githubStatus.entries.map((entry) => {
+              const project = projects.find(
+                (candidate) => candidate.id === entry.projectId,
+              );
+              return (
+                <article
+                  key={entry.projectId}
+                  className="rounded-xl border border-cyan-950/8 bg-white/75 p-5"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-semibold text-cyan-950">
+                      {project?.name ?? entry.projectId}
+                    </h3>
+                    <RefreshCw
+                      className="size-4 text-cyan-700"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm font-medium text-slate-700">
+                    {githubStateLabel[entry.state]}
+                  </p>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    {entry.observedDefaultBranch ?? 'lookup unavailable'} ·{' '}
+                    {shortRevision(entry.observedDefaultRevision)}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            Snapshot {githubStatus.status} ·{' '}
+            {githubStatus.generatedAt ?? 'no successful refresh recorded'}
+          </p>
+        </div>
+      </section>
+
+      <section
         id="ecosystem"
         aria-labelledby="ecosystem-title"
         className="relative mx-auto max-w-7xl px-5 pb-24 sm:px-8"
@@ -217,13 +279,13 @@ export default function Home() {
                 </div>
                 <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-cyan-950/7 pt-5">
                   <div className="flex flex-wrap gap-4 text-sm">
-                    <Link
-                      href={`/projects/${project.id}`}
+                    <a
+                      href={publicationPath(`/projects/${project.id}/`)}
                       className="inline-flex items-center gap-2 font-semibold text-cyan-950 hover:text-cyan-700"
                     >
                       Evidence record
                       <ArrowUpRight className="size-3.5" aria-hidden="true" />
-                    </Link>
+                    </a>
                     {project.surfaces.repository ? (
                       <a
                         href={project.surfaces.repository}

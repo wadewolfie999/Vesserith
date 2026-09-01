@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   ArrowLeft,
@@ -20,6 +19,8 @@ import {
   statusTone,
 } from '@/lib/registry';
 import { cn } from '@/lib/utils';
+import { getGitHubStatus, githubStateLabel } from '@/lib/github-status';
+import { publicationPath } from '@/lib/publication-path';
 
 type ProjectPageProps = { params: Promise<{ id: string }> };
 
@@ -60,6 +61,7 @@ function Status({ label, tone }: { label: string; tone: string }) {
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = getProject((await params).id);
   if (!project) notFound();
+  const github = getGitHubStatus(project.id);
 
   const surfaces = [
     ['Repository', project.surfaces.repository, GitBranch],
@@ -76,13 +78,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           aria-label="Project navigation"
           className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5 sm:px-8"
         >
-          <Link
-            href="/"
+          <a
+            href={publicationPath('/')}
             className="inline-flex items-center gap-2 text-sm font-medium text-cyan-950 hover:text-cyan-700"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
             Ecosystem map
-          </Link>
+          </a>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
             Reviewed {project.reviewedAt}
           </span>
@@ -138,6 +140,20 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 {shortRevision(project.source.revision)}
               </p>
             </div>
+            {github ? (
+              <div className="mt-5 border-t border-cyan-950/8 pt-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  Derived GitHub snapshot
+                </p>
+                <p className="mt-2 text-xs font-medium text-cyan-950">
+                  {githubStateLabel[github.state]}
+                </p>
+                <p className="mt-2 font-mono text-[10px] text-muted-foreground">
+                  {github.observedDefaultBranch ?? 'lookup unavailable'} ·{' '}
+                  {shortRevision(github.observedDefaultRevision)}
+                </p>
+              </div>
+            ) : null}
           </aside>
         </div>
       </section>

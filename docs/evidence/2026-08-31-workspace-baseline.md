@@ -3,6 +3,16 @@
 This record preserves the evidence used by the first Vesserith implementation
 slice. It is not a live operational report.
 
+## Later observation at the same evidence epoch
+
+- The operator created a public, empty GitHub repository at
+  `https://github.com/wadewolfie999/Vesserith` under Vahid's
+  `wadewolfie999` account.
+- The repository page showed no commits and offered initial push instructions,
+  so no Git commit can yet be treated as its source baseline.
+- This observation does not authorize a remote mutation, push, Pages
+  enablement, or publication.
+
 ## Repository state
 
 - Vesserith began as an empty, unborn `main` repository with no remote.

@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
-const roots = ['app', 'docs', 'registry', 'schemas'];
+const roots = ['.github', 'app', 'derived', 'docs', 'registry', 'schemas'];
 const textExtensions = new Set(['.css', '.json', '.md', '.ts', '.tsx']);
 const findings = [];
 

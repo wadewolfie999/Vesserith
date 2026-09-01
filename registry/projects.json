@@ -31,7 +31,7 @@
         "Does not own product runtime state, private records, or credentials.",
         "Remains useful when every product application is unavailable."
       ],
-      "nextGate": "Local verification, then separately approved Sites publication.",
+      "nextGate": "Publish the verified static hub at the default GitHub Pages URL; reserve Sites for capabilities that require interactivity, authentication, or persistence.",
       "reviewedAt": "2026-08-31"
     },
     {
