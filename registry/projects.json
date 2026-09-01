@@ -1,6 +1,6 @@
 {
   "schema": "https://vesserith.xyz/schemas/ecosystem-registry-v1.json",
-  "evidenceEpoch": "2026-08-31",
+  "evidenceEpoch": "2026-09-01",
   "projects": [
     {
       "id": "vesserith",
@@ -9,20 +9,23 @@
       "role": "Ecosystem coordination",
       "summary": "The stable public namespace, evidence map, and navigation layer for independent Vesserith projects.",
       "implementation": {
-        "state": "prototype",
-        "label": "Public hub prototype"
+        "state": "implemented",
+        "label": "Public Pages hub"
       },
-      "operation": { "state": "not-deployed", "label": "Local only" },
+      "operation": { "state": "verified", "label": "GitHub Pages live" },
       "evidence": {
         "state": "observed",
-        "label": "Workspace observed",
-        "detail": "The repository began empty; this read-only hub is the first implementation slice."
+        "label": "Deployment observed",
+        "detail": "GitHub Actions published the read-only hub from commit 528d3aa288c72737478636b9d72923d520a98541; the default Pages URL, all five project routes, and exact build provenance were observed."
       },
-      "source": { "repository": null, "revision": null },
+      "source": {
+        "repository": "https://github.com/wadewolfie999/Vesserith",
+        "revision": "528d3aa288c72737478636b9d72923d520a98541"
+      },
       "surfaces": {
-        "repository": null,
+        "repository": "https://github.com/wadewolfie999/Vesserith",
         "wiki": null,
-        "pages": null,
+        "pages": "https://wadewolfie999.github.io/Vesserith/",
         "site": null,
         "domain": "vesserith.xyz"
       },
@@ -31,8 +34,8 @@
         "Does not own product runtime state, private records, or credentials.",
         "Remains useful when every product application is unavailable."
       ],
-      "nextGate": "Publish the verified static hub at the default GitHub Pages URL; reserve Sites for capabilities that require interactivity, authentication, or persistence.",
-      "reviewedAt": "2026-08-31"
+      "nextGate": "Maintain Pages as the durable static evidence surface; introduce Sites only when an approved capability requires interactivity, authentication, or persistence.",
+      "reviewedAt": "2026-09-01"
     },
     {
       "id": "mynyra",

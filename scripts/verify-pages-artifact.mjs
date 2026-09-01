@@ -38,6 +38,7 @@ for (const required of [
   'One namespace.',
   'Four independent systems.',
   'Derived GitHub snapshot',
+  'GitHub Pages live',
   'Reconciliation pending',
   'Runtime not qualified',
 ]) {

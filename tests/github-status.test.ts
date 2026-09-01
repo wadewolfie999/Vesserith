@@ -18,7 +18,7 @@ function clone() {
 void test('accepts the checked-in fail-soft GitHub snapshot', () => {
   const snapshot = validateGitHubStatusSnapshot(clone());
   assert.equal(snapshot.status, 'unavailable');
-  assert.equal(snapshot.entries.length, 3);
+  assert.equal(snapshot.entries.length, 4);
   assert.ok(snapshot.entries.every((entry) => entry.state === 'unavailable'));
 });
 

@@ -13,6 +13,23 @@ slice. It is not a live operational report.
 - This observation does not authorize a remote mutation, push, Pages
   enablement, or publication.
 
+## Publication observation: 2026-09-01
+
+- The approved local history was pushed to
+  `https://github.com/wadewolfie999/Vesserith` on `main`.
+- Commit `528d3aa288c72737478636b9d72923d520a98541` contains the first GitHub
+  Pages publication workflow and static artifact contract.
+- The initial workflow attempt built successfully but stopped at the expected
+  GitHub guard because Pages was disabled.
+- After the operator confirmed the public setting, GitHub Pages was configured
+  to use GitHub Actions and workflow run `33543564417`, attempt 2, completed
+  successfully.
+- `https://wadewolfie999.github.io/Vesserith/`, all five clean project routes,
+  and `/.well-known/vesserith-build.json` were observed. The provenance bound
+  the deployment to commit `528d3aa288c72737478636b9d72923d520a98541`.
+- No Sites project, Sites access policy, custom domain, DNS record, credential,
+  product runtime, or operational system was changed during publication.
+
 ## Repository state
 
 - Vesserith began as an empty, unborn `main` repository with no remote.

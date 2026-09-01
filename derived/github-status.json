@@ -5,6 +5,15 @@
   "status": "unavailable",
   "entries": [
     {
+      "projectId": "vesserith",
+      "repository": "https://github.com/wadewolfie999/Vesserith",
+      "reviewedRevision": "528d3aa288c72737478636b9d72923d520a98541",
+      "observedDefaultBranch": null,
+      "observedDefaultRevision": null,
+      "observedAt": null,
+      "state": "unavailable"
+    },
+    {
       "projectId": "mynyra",
       "repository": "https://github.com/wadewolfie999/Mynyra",
       "reviewedRevision": "3c02009897dd552f1a0592afe15c602baa882aea",

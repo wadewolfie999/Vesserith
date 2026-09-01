@@ -35,8 +35,9 @@ npm run smoke
 
 ## GitHub Pages build
 
-The first public release is a static GitHub Pages artifact. A project-path
-build can be reproduced locally without publishing anything:
+The first public release is live as a static GitHub Pages artifact at
+`https://wadewolfie999.github.io/Vesserith/`. A project-path build can be
+reproduced locally without publishing anything:
 
 ```sh
 VESSERITH_BASE_PATH=/Vesserith \
@@ -56,12 +57,11 @@ workflow attempts to refresh it during each verified `main` publication and
 once daily. Lookup failures do not replace or invalidate the commit-pinned
 registry, and visitors never query GitHub directly.
 
-The public repository now exists at
-`https://github.com/wadewolfie999/Vesserith`, but it has no commit baseline.
-The workflow remains inactive until the source is pushed with explicit
-approval and GitHub Pages is enabled through Actions. `vesserith.xyz` remains
-untouched and reserved for a later Sites application that passes the
-capability and ownership gates.
+The public repository is `https://github.com/wadewolfie999/Vesserith`. GitHub
+Pages is configured to publish through Actions after validation on updates to
+`main` and on the daily freshness schedule. `vesserith.xyz` remains untouched
+and reserved for a later Sites application that passes the capability and
+ownership gates.
 
 ## Public contracts
 
@@ -77,7 +77,7 @@ canonical for the products it describes.
 
 ## Current authorization boundary
 
-The current implementation and workflow are local-only. It has no authentication,
-persistence, analytics, product API, operational control, deployment, or DNS
-authority. GitHub publication, Sites deployment, and DNS changes are separate
-approval gates.
+The GitHub Pages hub is public and read-only. It has no authentication,
+persistence, analytics, product API, operational control, Sites deployment, or
+DNS authority. Sites publication and DNS changes remain separate approval
+gates.
