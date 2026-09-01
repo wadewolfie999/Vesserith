@@ -58,6 +58,7 @@ const schemaFiles = [
   'build-provenance-v1.json',
   'ecosystem-registry-v1.json',
   'github-status-snapshot-v1.json',
+  'mynyra-showcase-v1.json',
   'public-evidence-v1.json',
 ];
 const registry = JSON.parse(

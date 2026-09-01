@@ -14,6 +14,7 @@ const schemaFiles = [
   'build-provenance-v1.json',
   'ecosystem-registry-v1.json',
   'github-status-snapshot-v1.json',
+  'mynyra-showcase-v1.json',
   'public-evidence-v1.json',
 ];
 
@@ -77,9 +78,33 @@ for (const required of [
   'Derived GitHub snapshot',
   'GitHub Pages live',
   'Reconciliation pending',
+  'Mynyra research lab',
+  'Run manifest',
+  'Offline replay',
+  'Evidence envelope',
+  'BACKTEST only',
+  'Provider access',
+  'Order capability',
+  'Product backend',
 ]) {
   if (!home.includes(required))
     throw new Error(`index.html is missing ${required}`);
+}
+
+if (
+  home.indexOf('Mynyra research lab') >=
+  home.indexOf('Three projects, reviewed independently.')
+) {
+  throw new Error('Mynyra research lab must precede the project map');
+}
+if (
+  home.indexOf('Three projects, reviewed independently.') >=
+  home.indexOf('Freshness without moving the evidence baseline.')
+) {
+  throw new Error('project map must precede the freshness snapshot');
+}
+if (!home.includes('href="#mynyra"') || !home.includes('href="#evidence"')) {
+  throw new Error('home navigation is missing the Mynyra or Evidence anchors');
 }
 
 for (const forbidden of [
@@ -132,6 +157,17 @@ for (const schemaFile of schemaFiles) {
   if (schema.$id !== `${schemaBase}${schemaFile}`) {
     throw new Error(`schemas/${schemaFile} has an unexpected $id`);
   }
+}
+
+const showcaseSchema = JSON.parse(
+  await requireFile('schemas/mynyra-showcase-v1.json'),
+);
+if (
+  showcaseSchema.$id !== `${schemaBase}mynyra-showcase-v1.json` ||
+  showcaseSchema.properties?.projectId?.const !== 'mynyra' ||
+  showcaseSchema.properties?.mode?.const !== 'BACKTEST'
+) {
+  throw new Error('Mynyra showcase schema has an unexpected contract');
 }
 
 console.log(

@@ -1,0 +1,61 @@
+{
+  "schema": "https://wadewolfie999.github.io/Vesserith/schemas/mynyra-showcase-v1.json",
+  "projectId": "mynyra",
+  "source": {
+    "repository": "https://github.com/wadewolfie999/Mynyra",
+    "revision": "3c02009897dd552f1a0592afe15c602baa882aea",
+    "reviewedAt": "2026-08-31"
+  },
+  "title": "Mynyra research lab",
+  "summary": "A trading foundation you can inspect: deterministic, offline, and deliberately separated from live market operation.",
+  "mode": "BACKTEST",
+  "pipeline": [
+    {
+      "id": "manifest",
+      "label": "Run manifest",
+      "detail": "Pins executable, input, configuration, permissions, and resource limits before processing begins."
+    },
+    {
+      "id": "replay",
+      "label": "Offline replay",
+      "detail": "Processes canonical local records deterministically without a provider, broker, credential, or network path."
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence envelope",
+      "detail": "Returns a redacted result with the executable, input, and configuration hashes bound to the run."
+    }
+  ],
+  "signals": [
+    {
+      "id": "mode",
+      "label": "Execution mode",
+      "value": "BACKTEST only",
+      "detail": "The first proof contract is a deterministic local replay."
+    },
+    {
+      "id": "provider",
+      "label": "Provider access",
+      "value": "Disabled",
+      "detail": "No provider or broker connection is configured."
+    },
+    {
+      "id": "orders",
+      "label": "Order capability",
+      "value": "Disabled",
+      "detail": "The offline manifest rejects order-enabled permissions."
+    },
+    {
+      "id": "backend",
+      "label": "Product backend",
+      "value": "None",
+      "detail": "The public control-room UI remains static and local-display only."
+    }
+  ],
+  "nextGate": "Generate sanitized, commit-bound offline evidence without introducing a product backend.",
+  "links": {
+    "evidenceRecord": "https://wadewolfie999.github.io/Vesserith/projects/mynyra/",
+    "repository": "https://github.com/wadewolfie999/Mynyra",
+    "offlineReplay": "https://github.com/wadewolfie999/Mynyra/blob/3c02009897dd552f1a0592afe15c602baa882aea/engine/docs/MYNYRA_OFFLINE_REPLAY.md"
+  }
+}

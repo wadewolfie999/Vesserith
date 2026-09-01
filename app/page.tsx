@@ -1,5 +1,6 @@
 import {
   ArrowDownRight,
+  ArrowRight,
   ArrowUpRight,
   BookOpen,
   CircleDot,
@@ -23,6 +24,7 @@ import {
   shortRevision,
   statusTone,
 } from '@/lib/registry';
+import { mynyraShowcase } from '@/lib/mynyra-showcase';
 import { cn } from '@/lib/utils';
 import { githubStateLabel, githubStatus } from '@/lib/github-status';
 import { publicationPath } from '@/lib/publication-path';
@@ -54,6 +56,12 @@ export default function Home() {
           <div className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
             <a
               className="transition-colors hover:text-foreground"
+              href="#mynyra"
+            >
+              Mynyra
+            </a>
+            <a
+              className="transition-colors hover:text-foreground"
               href="#freshness"
             >
               Dashboard
@@ -81,26 +89,26 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="relative mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
-        <div className="max-w-4xl">
+      <section className="relative mx-auto max-w-7xl px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
+        <div className="max-w-3xl">
           <p className="eyebrow">
             Public evidence dashboard · Evidence epoch {evidenceEpoch}
           </p>
-          <h1 className="mt-6 max-w-4xl text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-cyan-950 sm:text-7xl lg:text-[5.7rem]">
+          <h1 className="mt-5 max-w-3xl text-balance text-4xl font-semibold leading-[1] tracking-[-0.05em] text-cyan-950 sm:text-6xl lg:text-[4.5rem]">
             Three projects.
             <span className="block text-gradient">One evidence view.</span>
           </h1>
-          <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
+          <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
             A public GitHub Pages dashboard for Vesserith, Mynyra, and
             Hova—showing reviewed source, observed operation, and unresolved
             evidence without inventing progress.
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <a
-              href="#projects"
+              href="#mynyra"
               className="inline-flex h-11 items-center gap-2 rounded-full bg-cyan-950 px-5 text-sm font-medium text-white shadow-[0_12px_30px_rgb(8_47_73/20%)] transition hover:-translate-y-0.5 hover:bg-cyan-900"
             >
-              Review project evidence
+              Open Mynyra research lab
               <ArrowDownRight className="size-4" aria-hidden="true" />
             </a>
             <span className="inline-flex h-11 items-center gap-2 rounded-full border border-cyan-950/10 bg-white/70 px-4 text-sm text-muted-foreground">
@@ -109,11 +117,133 @@ export default function Home() {
             </span>
           </div>
         </div>
+      </section>
 
-        <div
-          id="evidence"
-          className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-cyan-950/10 bg-cyan-950/10 sm:grid-cols-3"
-        >
+      <section
+        id="mynyra"
+        aria-labelledby="mynyra-title"
+        className="relative mx-auto max-w-7xl px-5 pb-16 sm:px-8 sm:pb-20"
+      >
+        <div className="overflow-hidden rounded-3xl border border-cyan-950/10 bg-cyan-950 text-white shadow-[0_24px_80px_rgb(8_47_73/14%)]">
+          <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
+            <div className="relative overflow-hidden bg-gradient-to-br from-cyan-950 via-cyan-900 to-slate-900 p-6 sm:p-8 lg:p-10">
+              <div
+                className="absolute -right-24 -top-24 size-64 rounded-full bg-cyan-300/10 blur-3xl"
+                aria-hidden="true"
+              />
+              <p className="eyebrow text-cyan-200/70">Focused project space</p>
+              <h2
+                id="mynyra-title"
+                className="relative mt-4 max-w-md text-3xl font-semibold tracking-tight sm:text-4xl"
+              >
+                {mynyraShowcase.title}
+              </h2>
+              <p className="relative mt-5 max-w-md text-sm leading-7 text-cyan-50/75 sm:text-base">
+                {mynyraShowcase.summary}
+              </p>
+              <div className="relative mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href={mynyraShowcase.links.evidenceRecord}
+                  className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-cyan-950 transition hover:-translate-y-0.5 hover:bg-cyan-50"
+                >
+                  Open evidence record
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+                <a
+                  href={mynyraShowcase.links.repository}
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-white/20 px-4 text-sm font-medium text-cyan-50 transition hover:border-white/40 hover:bg-white/10"
+                >
+                  Repository
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+              </div>
+              <p className="relative mt-8 font-mono text-[10px] uppercase tracking-[0.14em] text-cyan-200/60">
+                Source {mynyraShowcase.source.revision.slice(0, 8)} · reviewed{' '}
+                {mynyraShowcase.source.reviewedAt}
+              </p>
+            </div>
+
+            <div className="bg-white p-6 text-cyan-950 sm:p-8 lg:p-10">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="eyebrow">Deterministic proof path</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    The public view stops at evidence. It does not become a
+                    provider, broker, or order boundary.
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full border border-cyan-900/10 bg-cyan-50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.13em] text-cyan-800">
+                  {mynyraShowcase.mode}
+                </span>
+              </div>
+
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                {mynyraShowcase.pipeline.map((stage, index) => (
+                  <div key={stage.id} className="relative">
+                    <article className="h-full rounded-2xl border border-cyan-950/10 bg-slate-50 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-cyan-700">
+                          0{index + 1}
+                        </span>
+                        {index < mynyraShowcase.pipeline.length - 1 ? (
+                          <ArrowRight
+                            className="hidden size-4 text-cyan-500 sm:block"
+                            aria-hidden="true"
+                          />
+                        ) : null}
+                      </div>
+                      <h3 className="mt-4 text-sm font-semibold text-cyan-950">
+                        {stage.label}
+                      </h3>
+                      <p className="mt-2 text-xs leading-5 text-slate-600">
+                        {stage.detail}
+                      </p>
+                    </article>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                {mynyraShowcase.signals.map((signal) => (
+                  <div
+                    key={signal.id}
+                    className="rounded-xl border border-cyan-950/8 bg-white px-4 py-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs text-slate-600">
+                        {signal.label}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-cyan-800">
+                        {signal.value}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 flex flex-col gap-3 border-t border-cyan-950/8 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <p className="max-w-xl text-xs leading-5 text-slate-600">
+                  Next gate: {mynyraShowcase.nextGate}
+                </p>
+                <a
+                  href={mynyraShowcase.links.offlineReplay}
+                  className="inline-flex shrink-0 items-center gap-2 text-xs font-semibold text-cyan-900 hover:text-cyan-700"
+                >
+                  Read replay contract
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="evidence"
+        aria-label="Evidence map method"
+        className="relative mx-auto max-w-7xl px-5 pb-16 sm:px-8"
+      >
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-cyan-950/10 bg-cyan-950/10 sm:grid-cols-3">
           {[
             [
               'Implementation',
@@ -139,66 +269,6 @@ export default function Home() {
               </p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section
-        id="freshness"
-        aria-labelledby="freshness-title"
-        className="relative mx-auto max-w-7xl px-5 pb-24 sm:px-8"
-      >
-        <div className="rounded-2xl border border-cyan-950/10 bg-white/75 p-6 shadow-sm sm:p-8">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="eyebrow">
-                Derived GitHub snapshot · non-authoritative
-              </p>
-              <h2
-                id="freshness-title"
-                className="mt-3 text-2xl font-semibold tracking-tight text-cyan-950 sm:text-3xl"
-              >
-                Freshness without moving the evidence baseline.
-              </h2>
-            </div>
-            <p className="max-w-md text-sm leading-6 text-muted-foreground">
-              Refreshed during publication. A failed lookup leaves the reviewed,
-              commit-pinned registry intact.
-            </p>
-          </div>
-          <div className="mt-7 grid gap-3 md:grid-cols-3">
-            {githubStatus.entries.map((entry) => {
-              const project = projects.find(
-                (candidate) => candidate.id === entry.projectId,
-              );
-              return (
-                <article
-                  key={entry.projectId}
-                  className="rounded-xl border border-cyan-950/8 bg-white/75 p-5"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <h3 className="font-semibold text-cyan-950">
-                      {project?.name ?? entry.projectId}
-                    </h3>
-                    <RefreshCw
-                      className="size-4 text-cyan-700"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <p className="mt-4 text-sm font-medium text-slate-700">
-                    {githubStateLabel[entry.state]}
-                  </p>
-                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {entry.observedDefaultBranch ?? 'lookup unavailable'} ·{' '}
-                    {shortRevision(entry.observedDefaultRevision)}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
-          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            Snapshot {githubStatus.status} ·{' '}
-            {githubStatus.generatedAt ?? 'no successful refresh recorded'}
-          </p>
         </div>
       </section>
 
@@ -311,6 +381,66 @@ export default function Home() {
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      <section
+        id="freshness"
+        aria-labelledby="freshness-title"
+        className="relative mx-auto max-w-7xl px-5 pb-24 sm:px-8"
+      >
+        <div className="rounded-2xl border border-cyan-950/10 bg-white/75 p-6 shadow-sm sm:p-8">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="eyebrow">
+                Derived GitHub snapshot · non-authoritative
+              </p>
+              <h2
+                id="freshness-title"
+                className="mt-3 text-2xl font-semibold tracking-tight text-cyan-950 sm:text-3xl"
+              >
+                Freshness without moving the evidence baseline.
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-muted-foreground">
+              Refreshed during publication. A failed lookup leaves the reviewed,
+              commit-pinned registry intact.
+            </p>
+          </div>
+          <div className="mt-7 grid gap-3 md:grid-cols-3">
+            {githubStatus.entries.map((entry) => {
+              const project = projects.find(
+                (candidate) => candidate.id === entry.projectId,
+              );
+              return (
+                <article
+                  key={entry.projectId}
+                  className="rounded-xl border border-cyan-950/8 bg-white/75 p-5"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-semibold text-cyan-950">
+                      {project?.name ?? entry.projectId}
+                    </h3>
+                    <RefreshCw
+                      className="size-4 text-cyan-700"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm font-medium text-slate-700">
+                    {githubStateLabel[entry.state]}
+                  </p>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    {entry.observedDefaultBranch ?? 'lookup unavailable'} ·{' '}
+                    {shortRevision(entry.observedDefaultRevision)}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+            Snapshot {githubStatus.status} ·{' '}
+            {githubStatus.generatedAt ?? 'no successful refresh recorded'}
+          </p>
         </div>
       </section>
 

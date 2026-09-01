@@ -23,8 +23,31 @@ for (const required of [
   'Three projects.',
   'One evidence view.',
   'Reconciliation pending',
+  'Mynyra research lab',
+  'Run manifest',
+  'Offline replay',
+  'Evidence envelope',
+  'BACKTEST only',
+  'Provider access',
+  'Order capability',
+  'Product backend',
 ]) {
   if (!home.includes(required)) throw new Error(`/: missing ${required}`);
+}
+if (!home.includes('href="#mynyra"') || !home.includes('href="#evidence"')) {
+  throw new Error('/: missing Mynyra or Evidence anchor');
+}
+if (
+  home.indexOf('Mynyra research lab') >=
+  home.indexOf('Three projects, reviewed independently.')
+) {
+  throw new Error('/: Mynyra lab is not before project evidence');
+}
+if (
+  home.indexOf('Three projects, reviewed independently.') >=
+  home.indexOf('Freshness without moving the evidence baseline.')
+) {
+  throw new Error('/: freshness is not after project evidence');
 }
 
 for (const forbidden of [
