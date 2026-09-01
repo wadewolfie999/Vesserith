@@ -25,7 +25,8 @@ export type GitHubStatusSnapshot = {
   entries: GitHubStatusEntry[];
 };
 
-const schemaId = 'https://vesserith.xyz/schemas/github-status-snapshot-v1.json';
+const schemaId =
+  'https://wadewolfie999.github.io/Vesserith/schemas/github-status-snapshot-v1.json';
 const allowedIds = new Set<string>(projectIds);
 const allowedStates = new Set<GitHubRevisionState>([
   'reviewed-match',
@@ -179,6 +180,13 @@ export function validateGitHubStatusSnapshot(
       state,
     };
   });
+
+  if (
+    seen.size !== projectIds.length ||
+    projectIds.some((projectId) => !seen.has(projectId))
+  ) {
+    fail('snapshot.entries', `must contain exactly ${projectIds.join(', ')}`);
+  }
 
   const observedCount = entries.filter(
     (entry) => entry.state !== 'unavailable',

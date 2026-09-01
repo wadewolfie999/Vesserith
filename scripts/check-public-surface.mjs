@@ -4,6 +4,15 @@ import { extname, join } from 'node:path';
 const roots = ['.github', 'app', 'derived', 'docs', 'registry', 'schemas'];
 const textExtensions = new Set(['.css', '.json', '.md', '.ts', '.tsx']);
 const findings = [];
+const activeRoots = [
+  '.github',
+  'app',
+  'derived',
+  'registry',
+  'schemas',
+  'lib',
+  'scripts',
+];
 
 async function visit(path) {
   for (const entry of await readdir(path, { withFileTypes: true })) {
@@ -33,6 +42,28 @@ async function visit(path) {
 
 for (const root of roots) await visit(root);
 
+for (const root of activeRoots) {
+  async function rejectRetiredPublicContent(path) {
+    for (const entry of await readdir(path, { withFileTypes: true })) {
+      const target = join(path, entry.name);
+      if (entry.isDirectory()) {
+        await rejectRetiredPublicContent(target);
+        continue;
+      }
+      if (target === 'scripts/check-public-surface.mjs') continue;
+      if (!textExtensions.has(extname(entry.name))) continue;
+      const text = await readFile(target, 'utf8');
+      if (text.includes('vesserith.xyz')) {
+        findings.push(`${target}: retired domain identifier`);
+      }
+      if (/\bSites\b/.test(text)) {
+        findings.push(`${target}: retired Sites roadmap language`);
+      }
+    }
+  }
+  await rejectRetiredPublicContent(root);
+}
+
 if (findings.length > 0) {
   throw new Error(
     `Public-surface safety check failed:\n${findings.join('\n')}`,
@@ -40,5 +71,5 @@ if (findings.length > 0) {
 }
 
 console.log(
-  'Public-surface safety check passed: no email, raw IP, credential assignment, or private key.',
+  'Public-surface safety check passed: no secrets, personal addresses, or retired domain/hosting roadmap in active output.',
 );

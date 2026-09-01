@@ -25,6 +25,14 @@ const exitCode = await new Promise((resolveExit, reject) => {
 if (exitCode !== 0) process.exit(exitCode);
 
 const outputDirectory = resolve(root, 'dist/client');
+const schemaDirectory = resolve(root, 'schemas');
+const publishedSchemaDirectory = resolve(outputDirectory, 'schemas');
+const schemaFiles = [
+  'build-provenance-v1.json',
+  'ecosystem-registry-v1.json',
+  'github-status-snapshot-v1.json',
+  'public-evidence-v1.json',
+];
 const registry = JSON.parse(
   await readFile(resolve(root, 'registry/projects.json'), 'utf8'),
 );
@@ -39,8 +47,17 @@ for (const project of registry.projects) {
   await copyFile(source, resolve(destinationDirectory, 'index.html'));
 }
 
+await mkdir(publishedSchemaDirectory, { recursive: true });
+for (const schemaFile of schemaFiles) {
+  await copyFile(
+    resolve(schemaDirectory, schemaFile),
+    resolve(publishedSchemaDirectory, schemaFile),
+  );
+}
+
 const provenance = {
-  schema: 'https://vesserith.xyz/schemas/build-provenance-v1.json',
+  schema:
+    'https://wadewolfie999.github.io/Vesserith/schemas/build-provenance-v1.json',
   projectId: 'vesserith',
   sourceCommit: process.env.VESSERITH_SOURCE_COMMIT ?? 'local-uncommitted',
   buildTimestamp: process.env.VESSERITH_BUILD_TIMESTAMP ?? null,
@@ -70,5 +87,5 @@ await writeFile(
 );
 
 console.log(
-  `[pages] finalized ${registry.projects.length} clean project routes and build provenance`,
+  `[pages] finalized ${registry.projects.length} clean project routes, ${schemaFiles.length} schemas, and build provenance`,
 );

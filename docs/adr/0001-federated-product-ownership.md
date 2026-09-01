@@ -17,19 +17,18 @@ state and security contracts.
 
 ## Decision
 
-Vesserith is a thin coordination layer. Mynyra, Nyvora, and Hova independently
-own their applications, contracts, data, deployments, security boundaries, and
-recovery.
+Vesserith is a thin evidence layer. Mynyra and Hova independently own their
+applications, contracts, data, deployments, security boundaries, and recovery.
+Nyvora remains outside the current public dashboard.
 
 Vesserith owns:
 
-- the public namespace and desired domain map;
-- the ecosystem registry and common status vocabulary;
-- shared navigation and public presentation conventions; and
+- the three-project public registry and common status vocabulary;
+- the GitHub Pages dashboard and public presentation conventions; and
 - cross-repository decisions about integration boundaries.
 
-Vesserith does not own product records, trading state, Nyvora kernel state,
-Hova private data, or shared credentials.
+Vesserith does not own product records, trading state, Hova private data, or
+shared credentials.
 
 ## Consequences
 

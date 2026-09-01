@@ -1,5 +1,6 @@
 const baseUrl = process.env.BASE_URL ?? 'http://localhost:3000';
-const projectIds = ['vesserith', 'mynyra', 'nyvora', 'hova', 'wadewolfie'];
+const projectIds = ['vesserith', 'mynyra', 'hova'];
+const removedProjectIds = ['nyvora', 'wadewolfie'];
 
 async function page(path, expectedStatus = 200) {
   const response = await fetch(new URL(path, baseUrl));
@@ -19,12 +20,20 @@ const home = await page('/');
 for (const required of [
   '<main id="content"',
   'aria-label="Primary navigation"',
-  'One namespace.',
-  'Four independent systems.',
+  'Three projects.',
+  'One evidence view.',
   'Reconciliation pending',
-  'Runtime not qualified',
 ]) {
   if (!home.includes(required)) throw new Error(`/: missing ${required}`);
+}
+
+for (const forbidden of [
+  ['vesserith', 'xyz'].join('.'),
+  'Nyvora',
+  'Personal profile',
+  '/projects/wadewolfie/',
+]) {
+  if (home.includes(forbidden)) throw new Error(`/: contains ${forbidden}`);
 }
 if (!home.includes('property="og:image"'))
   throw new Error('/: missing social-preview metadata');
@@ -37,6 +46,10 @@ for (const id of projectIds) {
   ) {
     throw new Error(`/projects/${id}: missing evidence sections`);
   }
+}
+
+for (const id of removedProjectIds) {
+  await page(`/projects/${id}`, 404);
 }
 
 await page('/projects/not-in-registry', 404);

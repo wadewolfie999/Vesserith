@@ -1,7 +1,7 @@
 # Vesserith
 
-Vesserith is the public evidence map and navigation layer for the Vesserith,
-Mynyra, Nyvora, Hova, and wadewolfie surfaces.
+Vesserith is a public GitHub Pages evidence dashboard for Vesserith, Mynyra,
+and Hova.
 
 This repository deliberately does not own product runtime state, credentials,
 private records, trading authority, or a shared product database.
@@ -53,15 +53,16 @@ npm run verify:pages
 ```
 
 The checked-in GitHub status snapshot is an unavailable fallback. The Pages
-workflow attempts to refresh it during each verified `main` publication and
-once daily. Lookup failures do not replace or invalidate the commit-pinned
-registry, and visitors never query GitHub directly.
+workflow attempts to refresh it during each verified `main` publication.
+Lookup failures do not replace or invalidate the commit-pinned registry, and
+visitors never query GitHub directly.
 
 The public repository is `https://github.com/wadewolfie999/Vesserith`. GitHub
 Pages is configured to publish through Actions after validation on updates to
-`main` and on the daily freshness schedule. `vesserith.xyz` remains untouched
-and reserved for a later Sites application that passes the capability and
-ownership gates.
+`main`; manual workflow dispatch remains available for recovery.
+
+The four JSON schemas are copied into the Pages artifact under `/schemas/` so
+their public identifiers resolve from the canonical Pages URL.
 
 ## Public contracts
 
@@ -77,7 +78,6 @@ canonical for the products it describes.
 
 ## Current authorization boundary
 
-The GitHub Pages hub is public and read-only. It has no authentication,
-persistence, analytics, product API, operational control, Sites deployment, or
-DNS authority. Sites publication and DNS changes remain separate approval
-gates.
+The GitHub Pages dashboard is public and read-only. It has no authentication,
+persistence, analytics, product API, operational control, private data, or
+external routing authority.

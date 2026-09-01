@@ -15,7 +15,7 @@ export default function NotFound() {
           href={publicationPath('/')}
           className="mt-8 inline-flex rounded-full bg-cyan-950 px-5 py-3 text-sm font-medium text-white hover:bg-cyan-900"
         >
-          Return to the ecosystem map
+          Return to the evidence dashboard
         </a>
       </div>
     </main>

@@ -70,3 +70,14 @@ authorized by this record.
 No product repository, Git remote, GitHub setting, Site, DNS record,
 credential, infrastructure component, persistent service, or trading system
 was modified while establishing this baseline.
+
+## Minimal dashboard decision: 2026-09-01
+
+- ADR 0005 narrows the active GitHub Pages dashboard to Vesserith, Mynyra, and
+  Hova.
+- Nyvora and wadewolfie remain in repository history but are not part of the
+  current public registry or generated project routes.
+- Publication changes from push-plus-daily refresh to push-triggered refresh,
+  with manual workflow dispatch retained for recovery.
+- External routing and alternate hosting remain historical context rather than
+  active public roadmap.

@@ -4,7 +4,6 @@ import {
   BookOpen,
   CircleDot,
   GitBranch,
-  Globe2,
   Layers3,
   Orbit,
   RefreshCw,
@@ -58,21 +57,21 @@ export default function Home() {
           <div className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
             <a
               className="transition-colors hover:text-foreground"
-              href="#ecosystem"
+              href="#freshness"
             >
-              Ecosystem
+              Dashboard
             </a>
             <a
               className="transition-colors hover:text-foreground"
-              href="#principles"
+              href="#evidence"
             >
-              Boundaries
+              Method
             </a>
             <a
               className="transition-colors hover:text-foreground"
-              href="#domains"
+              href="#projects"
             >
-              Domains
+              Projects
             </a>
           </div>
           <a
@@ -88,29 +87,28 @@ export default function Home() {
       <section className="relative mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
         <div className="max-w-4xl">
           <p className="eyebrow">
-            Public coordination layer · Evidence epoch {evidenceEpoch}
+            Public evidence dashboard · Evidence epoch {evidenceEpoch}
           </p>
           <h1 className="mt-6 max-w-4xl text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-cyan-950 sm:text-7xl lg:text-[5.7rem]">
-            One namespace.
-            <span className="block text-gradient">
-              Four independent systems.
-            </span>
+            Three projects.
+            <span className="block text-gradient">One evidence view.</span>
           </h1>
           <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
-            A public map of Vesserith, Mynyra, Nyvora, and Hova—showing what is
-            implemented, what is documented, and what remains a hypothesis.
+            A public GitHub Pages dashboard for Vesserith, Mynyra, and
+            Hova—showing reviewed source, observed operation, and unresolved
+            evidence without inventing progress.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <a
-              href="#ecosystem"
+              href="#projects"
               className="inline-flex h-11 items-center gap-2 rounded-full bg-cyan-950 px-5 text-sm font-medium text-white shadow-[0_12px_30px_rgb(8_47_73/20%)] transition hover:-translate-y-0.5 hover:bg-cyan-900"
             >
-              Explore the ecosystem
+              Review project evidence
               <ArrowDownRight className="size-4" aria-hidden="true" />
             </a>
             <span className="inline-flex h-11 items-center gap-2 rounded-full border border-cyan-950/10 bg-white/70 px-4 text-sm text-muted-foreground">
               <Orbit className="size-4 text-cyan-700" aria-hidden="true" />
-              Public first · operations separated
+              GitHub Pages · public and read-only
             </span>
           </div>
         </div>
@@ -208,23 +206,23 @@ export default function Home() {
       </section>
 
       <section
-        id="ecosystem"
-        aria-labelledby="ecosystem-title"
+        id="projects"
+        aria-labelledby="projects-title"
         className="relative mx-auto max-w-7xl px-5 pb-24 sm:px-8"
       >
         <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <p className="eyebrow">Registry · exact source revisions</p>
             <h2
-              id="ecosystem-title"
+              id="projects-title"
               className="mt-3 text-3xl font-semibold tracking-tight text-cyan-950 sm:text-4xl"
             >
-              The ecosystem, without blurred authority.
+              Three projects, reviewed independently.
             </h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-muted-foreground">
             Each project owns its source, application, data, deployment, and
-            recovery. Vesserith owns only this public map.
+            recovery. Vesserith owns only this public evidence view.
           </p>
         </div>
 
@@ -277,7 +275,7 @@ export default function Home() {
                     tone={statusTone.evidence[project.evidence.state]}
                   />
                 </div>
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-cyan-950/7 pt-5">
+                <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-cyan-950/7 pt-5">
                   <div className="flex flex-wrap gap-4 text-sm">
                     <a
                       href={publicationPath(`/projects/${project.id}/`)}
@@ -312,10 +310,6 @@ export default function Home() {
                       </a>
                     ) : null}
                   </div>
-                  <span className="inline-flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
-                    <Globe2 className="size-3.5" aria-hidden="true" />
-                    {project.surfaces.domain}
-                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -353,7 +347,7 @@ export default function Home() {
               [
                 '03',
                 'Operations apart',
-                'Public Sites never become a trading bus or privileged infrastructure console.',
+                'This static dashboard never becomes a trading bus, private store, or privileged console.',
               ],
             ].map(([number, title, copy]) => (
               <div key={number} className="border-t border-white/15 pt-5">
@@ -366,46 +360,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="domains"
-        aria-labelledby="domains-title"
-        className="relative mx-auto max-w-7xl px-5 py-18 sm:px-8 sm:py-24"
-      >
-        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-          <div>
-            <p className="eyebrow">Desired namespace · not live routing</p>
-            <h2
-              id="domains-title"
-              className="mt-3 text-3xl font-semibold tracking-tight text-cyan-950 sm:text-4xl"
-            >
-              Stable names, direct ownership.
-            </h2>
-          </div>
-          <p className="max-w-lg text-sm leading-6 text-muted-foreground">
-            DNS remains unconfigured until the authoritative zone and each Sites
-            custom-domain capability are independently verified.
-          </p>
-        </div>
-        <div className="mt-9 divide-y divide-cyan-950/8 overflow-hidden rounded-2xl border border-cyan-950/10 bg-white/70 shadow-sm">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="flex flex-col justify-between gap-2 px-5 py-4 sm:flex-row sm:items-center sm:px-6"
-            >
-              <span className="font-mono text-sm text-cyan-950">
-                {project.surfaces.domain}
-              </span>
-              <span className="text-sm text-muted-foreground">
-                {project.name} · direct owning Site
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <footer className="border-t border-cyan-950/8 bg-white/60">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 px-5 py-8 text-sm text-muted-foreground sm:flex-row sm:px-8">
-          <p>Vesserith · public evidence and navigation</p>
+          <p>Vesserith · GitHub Pages evidence dashboard</p>
           <p>Reviewed {evidenceEpoch} · no operational authority</p>
         </div>
       </footer>

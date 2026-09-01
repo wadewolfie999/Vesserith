@@ -17,35 +17,35 @@ const runtimeEnvironment = (
 const metadataBase = new URL(
   runtimeEnvironment?.VESSERITH_PUBLIC_ORIGIN ?? 'http://localhost:3000',
 );
-const socialImagePath = publicationPath('/og.png');
+const socialImagePath = publicationPath('/og-evidence.png');
 
 export const metadata: Metadata = {
   metadataBase,
   title: {
-    default: 'Vesserith — One namespace, independent systems',
+    default: 'Vesserith — Three projects, one evidence view',
     template: '%s · Vesserith',
   },
   description:
-    'The public evidence map and navigation layer for Vesserith, Mynyra, Nyvora, and Hova.',
+    'The public GitHub Pages evidence dashboard for Vesserith, Mynyra, and Hova.',
   openGraph: {
-    title: 'Vesserith — One namespace, independent systems',
+    title: 'Vesserith — Three projects, one evidence view',
     description:
-      'A public map of what is implemented, what is documented, and what remains a hypothesis.',
+      'A commit-bound view of reviewed source, observed operation, and unresolved evidence.',
     type: 'website',
     images: [
       {
         url: socialImagePath,
         width: 1200,
         height: 630,
-        alt: 'Vesserith — One namespace. Independent systems.',
+        alt: 'Vesserith — Three projects. One evidence view.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Vesserith — One namespace, independent systems',
+    title: 'Vesserith — Three projects, one evidence view',
     description:
-      'A public map of what is implemented, what is documented, and what remains a hypothesis.',
+      'A commit-bound view of reviewed source, observed operation, and unresolved evidence.',
     images: [socialImagePath],
   },
 };

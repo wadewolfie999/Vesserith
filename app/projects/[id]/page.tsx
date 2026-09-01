@@ -6,7 +6,6 @@ import {
   BookOpen,
   CircleDot,
   GitBranch,
-  Globe2,
   Milestone,
   ShieldCheck,
 } from 'lucide-react';
@@ -67,7 +66,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     ['Repository', project.surfaces.repository, GitBranch],
     ['Wiki', project.surfaces.wiki, BookOpen],
     ['GitHub Pages', project.surfaces.pages, BookOpen],
-    ['Site', project.surfaces.site, Globe2],
   ] as const;
 
   return (
@@ -83,7 +81,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             className="inline-flex items-center gap-2 text-sm font-medium text-cyan-950 hover:text-cyan-700"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Ecosystem map
+            Evidence dashboard
           </a>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
             Reviewed {project.reviewedAt}
@@ -124,22 +122,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <aside className="rounded-2xl border border-cyan-950/10 bg-white/80 p-5 shadow-[0_18px_60px_rgb(15_23_42/6%)] backdrop-blur-sm">
             <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              Desired public address
+              Pinned source
             </p>
-            <p className="mt-3 break-all font-mono text-sm text-cyan-950">
-              {project.surfaces.domain}
+            <p className="mt-2 font-mono text-xs text-cyan-950">
+              {shortRevision(project.source.revision)}
             </p>
-            <p className="mt-3 text-xs leading-5 text-muted-foreground">
-              Desired namespace only. No live routing is claimed.
-            </p>
-            <div className="mt-5 border-t border-cyan-950/8 pt-5">
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                Pinned source
-              </p>
-              <p className="mt-2 font-mono text-xs text-cyan-950">
-                {shortRevision(project.source.revision)}
-              </p>
-            </div>
             {github ? (
               <div className="mt-5 border-t border-cyan-950/8 pt-5">
                 <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">

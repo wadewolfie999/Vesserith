@@ -109,7 +109,8 @@ const status =
       : 'partial';
 
 const snapshot = {
-  schema: 'https://vesserith.xyz/schemas/github-status-snapshot-v1.json',
+  schema:
+    'https://wadewolfie999.github.io/Vesserith/schemas/github-status-snapshot-v1.json',
   generatedAt,
   source: 'github-api',
   status,

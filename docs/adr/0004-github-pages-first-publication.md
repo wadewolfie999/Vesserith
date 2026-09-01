@@ -1,10 +1,13 @@
 # ADR 0004: GitHub Pages first, Sites by capability gate
 
-- Status: Accepted
+- Status: Superseded by ADR 0005
 - Date: 2026-08-31
 - Evidence epoch: 2026-08-31
 
 ## Decision
+
+This record preserves the broader publication direction considered during the
+first release. ADR 0005 now controls the active Pages-only dashboard.
 
 The first public Vesserith hub will be a generated static GitHub Pages artifact
 published from verified `main` at GitHub's default project URL. The apex domain

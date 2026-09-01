@@ -7,12 +7,29 @@ const basePath =
   requestedBasePath === '' || requestedBasePath === '/'
     ? ''
     : `/${requestedBasePath.replace(/^\/+|\/+$/g, '')}`;
-const projectIds = ['vesserith', 'mynyra', 'nyvora', 'hova', 'wadewolfie'];
+const projectIds = ['vesserith', 'mynyra', 'hova'];
+const removedProjectIds = ['nyvora', 'wadewolfie'];
+const schemaBase = 'https://wadewolfie999.github.io/Vesserith/schemas/';
+const schemaFiles = [
+  'build-provenance-v1.json',
+  'ecosystem-registry-v1.json',
+  'github-status-snapshot-v1.json',
+  'public-evidence-v1.json',
+];
 
 async function requireFile(path) {
   const absolute = resolve(outputDirectory, path);
   await access(absolute);
   return readFile(absolute, 'utf8');
+}
+
+async function requireMissingFile(path) {
+  try {
+    await access(resolve(outputDirectory, path));
+  } catch {
+    return;
+  }
+  throw new Error(`${path} must not be present in the Pages artifact`);
 }
 
 const home = await requireFile('index.html');
@@ -34,16 +51,31 @@ for (const id of projectIds) {
   }
 }
 
+for (const id of removedProjectIds) {
+  await requireMissingFile(`projects/${id}/index.html`);
+  await requireMissingFile(`projects/${id}.html`);
+}
+
 for (const required of [
-  'One namespace.',
-  'Four independent systems.',
+  'Three projects.',
+  'One evidence view.',
   'Derived GitHub snapshot',
   'GitHub Pages live',
   'Reconciliation pending',
-  'Runtime not qualified',
 ]) {
   if (!home.includes(required))
     throw new Error(`index.html is missing ${required}`);
+}
+
+for (const forbidden of [
+  ['vesserith', 'xyz'].join('.'),
+  'Nyvora',
+  'Personal profile',
+  '/projects/wadewolfie/',
+]) {
+  if (home.includes(forbidden)) {
+    throw new Error(`index.html contains removed public content: ${forbidden}`);
+  }
 }
 
 if (basePath && !home.includes(`${basePath}/projects/mynyra/`)) {
@@ -64,6 +96,7 @@ const provenance = JSON.parse(
   await requireFile('.well-known/vesserith-build.json'),
 );
 if (
+  provenance.schema !== `${schemaBase}build-provenance-v1.json` ||
   provenance.projectId !== 'vesserith' ||
   provenance.registrySchema !== 'ecosystem-registry/v1' ||
   provenance.evidenceSchema !== 'public-evidence/v1'
@@ -79,6 +112,13 @@ if (
   );
 }
 
+for (const schemaFile of schemaFiles) {
+  const schema = JSON.parse(await requireFile(`schemas/${schemaFile}`));
+  if (schema.$id !== `${schemaBase}${schemaFile}`) {
+    throw new Error(`schemas/${schemaFile} has an unexpected $id`);
+  }
+}
+
 console.log(
-  `Pages artifact verified: root, ${projectIds.length} detail pages, 404, no-Jekyll marker, base path, and provenance.`,
+  `Pages artifact verified: root, ${projectIds.length} detail pages, removed routes, ${schemaFiles.length} schemas, 404, no-Jekyll marker, base path, and provenance.`,
 );

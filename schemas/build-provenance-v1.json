@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://vesserith.xyz/schemas/build-provenance-v1.json",
+  "$id": "https://wadewolfie999.github.io/Vesserith/schemas/build-provenance-v1.json",
   "title": "Vesserith public build provenance",
   "type": "object",
   "additionalProperties": false,
@@ -15,7 +15,7 @@
   ],
   "properties": {
     "schema": {
-      "const": "https://vesserith.xyz/schemas/build-provenance-v1.json"
+      "const": "https://wadewolfie999.github.io/Vesserith/schemas/build-provenance-v1.json"
     },
     "projectId": { "const": "vesserith" },
     "sourceCommit": {

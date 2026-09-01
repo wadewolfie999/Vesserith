@@ -1,22 +1,22 @@
 {
-  "schema": "https://vesserith.xyz/schemas/ecosystem-registry-v1.json",
+  "schema": "https://wadewolfie999.github.io/Vesserith/schemas/ecosystem-registry-v1.json",
   "evidenceEpoch": "2026-09-01",
   "projects": [
     {
       "id": "vesserith",
       "name": "Vesserith",
       "mark": "V",
-      "role": "Ecosystem coordination",
-      "summary": "The stable public namespace, evidence map, and navigation layer for independent Vesserith projects.",
+      "role": "Public evidence dashboard",
+      "summary": "A commit-bound GitHub Pages view of reviewed evidence for Vesserith, Mynyra, and Hova.",
       "implementation": {
         "state": "implemented",
-        "label": "Public Pages hub"
+        "label": "Public Pages dashboard"
       },
       "operation": { "state": "verified", "label": "GitHub Pages live" },
       "evidence": {
         "state": "observed",
         "label": "Deployment observed",
-        "detail": "GitHub Actions published the read-only hub from commit 528d3aa288c72737478636b9d72923d520a98541; the default Pages URL, all five project routes, and exact build provenance were observed."
+        "detail": "GitHub Actions published the read-only dashboard from commit 528d3aa288c72737478636b9d72923d520a98541; the default Pages URL, project routes, and exact build provenance were observed."
       },
       "source": {
         "repository": "https://github.com/wadewolfie999/Vesserith",
@@ -25,16 +25,14 @@
       "surfaces": {
         "repository": "https://github.com/wadewolfie999/Vesserith",
         "wiki": null,
-        "pages": "https://wadewolfie999.github.io/Vesserith/",
-        "site": null,
-        "domain": "vesserith.xyz"
+        "pages": "https://wadewolfie999.github.io/Vesserith/"
       },
       "boundaries": [
-        "Owns the public registry, navigation, domain map, and cross-repository decisions.",
+        "Owns this public registry, evidence method, navigation, and publication workflow.",
         "Does not own product runtime state, private records, or credentials.",
-        "Remains useful when every product application is unavailable."
+        "Remains useful when Mynyra or Hova is unavailable."
       ],
-      "nextGate": "Maintain Pages as the durable static evidence surface; introduce Sites only when an approved capability requires interactivity, authentication, or persistence.",
+      "nextGate": "Maintain the Pages dashboard and refresh reviewed evidence only through explicit repository changes.",
       "reviewedAt": "2026-09-01"
     },
     {
@@ -42,7 +40,7 @@
       "name": "Mynyra",
       "mark": "M",
       "role": "Trading research & proof",
-      "summary": "An offline-first trading control room and engine, and the first proving ground for Nyvora hypotheses.",
+      "summary": "An offline-first trading control room and engine with a static public presentation boundary.",
       "implementation": {
         "state": "implemented",
         "label": "Offline engine + static UI"
@@ -60,68 +58,14 @@
       "surfaces": {
         "repository": "https://github.com/wadewolfie999/Mynyra",
         "wiki": "https://github.com/wadewolfie999/Mynyra/wiki",
-        "pages": null,
-        "site": null,
-        "domain": "mynyra.vesserith.xyz"
+        "pages": null
       },
       "boundaries": [
         "Current public experience is static presentation, not an engine cockpit.",
         "Offline proof requires provider and order permissions to remain false.",
-        "No Sites surface may become a trading or credential boundary."
+        "The Pages dashboard cannot become a trading or credential boundary."
       ],
       "nextGate": "Generate sanitized, commit-bound offline evidence without introducing a product backend.",
-      "reviewedAt": "2026-08-31"
-    },
-    {
-      "id": "nyvora",
-      "name": "Nyvora",
-      "mark": "N",
-      "role": "Constitutional coordination",
-      "summary": "A domain-independent coordination and kernel project with an adopted baseline and a separate forward hypothesis.",
-      "implementation": {
-        "state": "prototype",
-        "label": "Legacy implementation candidate"
-      },
-      "operation": { "state": "deferred", "label": "Runtime not qualified" },
-      "evidence": {
-        "state": "observed",
-        "label": "Architecture observed",
-        "detail": "v1.0.1 is adopted architecture, not deployment proof. v2.0.0-alpha.1 remains an unqualified hypothesis."
-      },
-      "source": {
-        "repository": "https://github.com/wadewolfie999/Nyvora",
-        "revision": "dbb7d087dbf4b56e4ba193c3ca93cc3ae918ef63"
-      },
-      "surfaces": {
-        "repository": "https://github.com/wadewolfie999/Nyvora",
-        "wiki": "https://github.com/wadewolfie999/Nyvora/wiki",
-        "pages": null,
-        "site": null,
-        "domain": "nyvora.vesserith.xyz"
-      },
-      "boundaries": [
-        "v1.0.1 is adopted architecture, not a software release or deployment claim.",
-        "The current implementation is a legacy candidate and does not conform to the adopted baseline.",
-        "v2.0.0-alpha.1 remains offline, proposed, and unauthorized for E1 or E2."
-      ],
-      "nextGate": "Create an isolated E0 conformance harness and attempt to falsify the v2 hypothesis.",
-      "versions": [
-        {
-          "label": "v0.2.1",
-          "status": "superseded",
-          "detail": "Historical design label supplied by the operator; repository source evidence is missing."
-        },
-        {
-          "label": "v1.0.1",
-          "status": "adopted architecture",
-          "detail": "Corrected architecture baseline; not implementation or operational proof."
-        },
-        {
-          "label": "v2.0.0-alpha.1",
-          "status": "proposed hypothesis",
-          "detail": "Not implemented, adopted, qualified, production-ready, or authorized for live experiments."
-        }
-      ],
       "reviewedAt": "2026-08-31"
     },
     {
@@ -129,7 +73,7 @@
       "name": "Hova",
       "mark": "H",
       "role": "Private personal tracker",
-      "summary": "The Tracker application, moving toward one authenticated owner after source and data lineage reconciliation.",
+      "summary": "The Tracker project, pending source and data-lineage reconciliation before any implementation is adopted.",
       "implementation": {
         "state": "shell",
         "label": "Canonical repository shell"
@@ -138,7 +82,7 @@
       "evidence": {
         "state": "observed",
         "label": "Reconciliation pending",
-        "detail": "Adjacent Sites, SQLite, Manus, and Android lineages are preserved evidence; none is canonical yet."
+        "detail": "Adjacent hosted, SQLite, Manus, and Android lineages are preserved evidence; none is canonical yet."
       },
       "source": {
         "repository": "https://github.com/wadewolfie999/Hova",
@@ -147,45 +91,14 @@
       "surfaces": {
         "repository": "https://github.com/wadewolfie999/Hova",
         "wiki": null,
-        "pages": null,
-        "site": null,
-        "domain": "hova.vesserith.xyz"
+        "pages": null
       },
       "boundaries": [
         "The declared Hova repository is a shell; adjacent implementations are preserved evidence.",
         "No source or persistent store becomes canonical before read-only reconciliation.",
-        "The first canonical application is single-user and independently authenticated."
+        "The first canonical application remains single-user and independently authenticated."
       ],
-      "nextGate": "Inventory Sites D1 and self-hosted SQLite authority without exposing record content.",
-      "reviewedAt": "2026-08-31"
-    },
-    {
-      "id": "wadewolfie",
-      "name": "wadewolfie",
-      "mark": "W",
-      "role": "Personal profile",
-      "summary": "Vahid's future public profile and a human entry point into the projects gathered under Vesserith.",
-      "implementation": { "state": "shell", "label": "Surface reserved" },
-      "operation": { "state": "not-deployed", "label": "Not published" },
-      "evidence": {
-        "state": "operator-recorded",
-        "label": "Direction recorded",
-        "detail": "The profile surface is part of the approved domain map; no public implementation is claimed."
-      },
-      "source": { "repository": null, "revision": null },
-      "surfaces": {
-        "repository": null,
-        "wiki": null,
-        "pages": null,
-        "site": null,
-        "domain": "wadewolfie.vesserith.xyz"
-      },
-      "boundaries": [
-        "Owns personal public narrative, not ecosystem authority.",
-        "Shares navigation and provenance conventions with the Vesserith hub.",
-        "No profile implementation or publication is currently claimed."
-      ],
-      "nextGate": "Define public profile content before creating a separate Sites deployment.",
+      "nextGate": "Inventory adjacent source and persistent-store authority without exposing record content.",
       "reviewedAt": "2026-08-31"
     }
   ]

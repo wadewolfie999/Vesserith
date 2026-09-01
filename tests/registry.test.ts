@@ -14,13 +14,11 @@ function clone() {
 
 void test('accepts the checked-in ecosystem registry', () => {
   const registry = validateRegistry(clone());
-  assert.equal(registry.projects.length, 5);
+  assert.equal(registry.projects.length, 3);
   assert.deepEqual(registry.projects.map((project) => project.id).sort(), [
     'hova',
     'mynyra',
-    'nyvora',
     'vesserith',
-    'wadewolfie',
   ]);
 });
 
@@ -45,7 +43,7 @@ void test('rejects abbreviated source revisions', () => {
 
 void test('rejects verified operation for a repository shell', () => {
   const candidate = clone();
-  candidate.projects[3].operation.state = 'verified';
+  candidate.projects[2].operation.state = 'verified';
   assert.throws(
     () => validateRegistry(candidate),
     /shell cannot claim verified operation/,
@@ -64,18 +62,24 @@ void test('requires observed evidence for verified operation', () => {
 
 void test('rejects duplicated project identities', () => {
   const candidate = clone();
-  candidate.projects[4] = structuredClone(candidate.projects[3]);
+  candidate.projects[2] = structuredClone(candidate.projects[1]);
   assert.throws(
     () => validateRegistry(candidate),
     /project IDs must be unique/,
   );
 });
 
-void test('rejects an invented domain mapping', () => {
+void test('rejects removed public surface fields', () => {
   const candidate = clone();
-  candidate.projects[2].surfaces.domain = 'kernel.vesserith.xyz';
+  candidate.projects[1].surfaces.domain = 'retired.example';
   assert.throws(
     () => validateRegistry(candidate),
-    /must be nyvora\.vesserith\.xyz/,
+    /surfaces\.domain: unsupported field/,
   );
+});
+
+void test('rejects projects outside the minimal dashboard', () => {
+  const candidate = clone();
+  candidate.projects[2].id = 'nyvora';
+  assert.throws(() => validateRegistry(candidate), /unknown project nyvora/);
 });

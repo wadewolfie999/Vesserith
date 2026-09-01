@@ -1,10 +1,4 @@
-export const projectIds = [
-  'vesserith',
-  'mynyra',
-  'nyvora',
-  'hova',
-  'wadewolfie',
-] as const;
+export const projectIds = ['vesserith', 'mynyra', 'hova'] as const;
 
 export type ProjectId = (typeof projectIds)[number];
 export type ImplementationState = 'shell' | 'prototype' | 'implemented';
@@ -39,8 +33,6 @@ export type Project = {
     repository: string | null;
     wiki: string | null;
     pages: string | null;
-    site: string | null;
-    domain: string;
   };
   boundaries: string[];
   nextGate: string;
@@ -54,7 +46,8 @@ export type Registry = {
   projects: Project[];
 };
 
-const schemaId = 'https://vesserith.xyz/schemas/ecosystem-registry-v1.json';
+const schemaId =
+  'https://wadewolfie999.github.io/Vesserith/schemas/ecosystem-registry-v1.json';
 const implementationStates = new Set<ImplementationState>([
   'shell',
   'prototype',
@@ -73,13 +66,6 @@ const evidenceStates = new Set<EvidenceState>([
   'unavailable',
 ]);
 const allowedIds = new Set<string>(projectIds);
-const expectedDomains: Record<ProjectId, string> = {
-  vesserith: 'vesserith.xyz',
-  mynyra: 'mynyra.vesserith.xyz',
-  nyvora: 'nyvora.vesserith.xyz',
-  hova: 'hova.vesserith.xyz',
-  wadewolfie: 'wadewolfie.vesserith.xyz',
-};
 
 function fail(path: string, message: string): never {
   throw new Error(`${path}: ${message}`);
@@ -90,6 +76,17 @@ function record(value: unknown, path: string): Record<string, unknown> {
     fail(path, 'must be an object');
   }
   return value as Record<string, unknown>;
+}
+
+function exactKeys(
+  value: Record<string, unknown>,
+  path: string,
+  allowed: readonly string[],
+) {
+  const allowedKeys = new Set(allowed);
+  for (const key of Object.keys(value)) {
+    if (!allowedKeys.has(key)) fail(`${path}.${key}`, 'unsupported field');
+  }
 }
 
 function string(value: unknown, path: string): string {
@@ -197,6 +194,7 @@ function parseProject(value: unknown, index: number): Project {
   }
 
   const surfaceRecord = record(item.surfaces, `${path}.surfaces`);
+  exactKeys(surfaceRecord, `${path}.surfaces`, ['repository', 'wiki', 'pages']);
   const surfaceRepository = nullableHttpsUrl(
     surfaceRecord.repository,
     `${path}.surfaces.repository`,
@@ -204,11 +202,6 @@ function parseProject(value: unknown, index: number): Project {
   if (surfaceRepository !== repository) {
     fail(`${path}.surfaces.repository`, 'must match the source repository');
   }
-  const domain = string(surfaceRecord.domain, `${path}.surfaces.domain`);
-  if (domain !== expectedDomains[id]) {
-    fail(`${path}.surfaces.domain`, `must be ${expectedDomains[id]}`);
-  }
-
   let versions: ProjectVersion[] | undefined;
   if (item.versions !== undefined) {
     if (!Array.isArray(item.versions) || item.versions.length === 0) {
@@ -244,8 +237,6 @@ function parseProject(value: unknown, index: number): Project {
       repository: surfaceRepository,
       wiki: nullableHttpsUrl(surfaceRecord.wiki, `${path}.surfaces.wiki`),
       pages: nullableHttpsUrl(surfaceRecord.pages, `${path}.surfaces.pages`),
-      site: nullableHttpsUrl(surfaceRecord.site, `${path}.surfaces.site`),
-      domain,
     },
     boundaries: stringArray(item.boundaries, `${path}.boundaries`),
     nextGate: string(item.nextGate, `${path}.nextGate`),

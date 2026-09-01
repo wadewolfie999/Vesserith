@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://vesserith.xyz/schemas/public-evidence-v1.json",
+  "$id": "https://wadewolfie999.github.io/Vesserith/schemas/public-evidence-v1.json",
   "title": "Vesserith public evidence envelope",
   "type": "object",
   "additionalProperties": false,
@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema": {
-      "const": "https://vesserith.xyz/schemas/public-evidence-v1.json"
+      "const": "https://wadewolfie999.github.io/Vesserith/schemas/public-evidence-v1.json"
     },
     "producer": { "type": "string", "minLength": 1 },
     "source": {

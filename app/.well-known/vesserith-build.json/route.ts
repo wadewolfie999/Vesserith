@@ -12,7 +12,8 @@ const environment = runtimeEnvironment?.VESSERITH_BUILD_ENVIRONMENT ?? 'local';
 export function GET() {
   return Response.json(
     {
-      schema: 'https://vesserith.xyz/schemas/build-provenance-v1.json',
+      schema:
+        'https://wadewolfie999.github.io/Vesserith/schemas/build-provenance-v1.json',
       projectId: 'vesserith',
       sourceCommit,
       buildTimestamp,

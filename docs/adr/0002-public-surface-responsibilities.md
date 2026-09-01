@@ -1,10 +1,14 @@
 # ADR 0002: Public surface responsibilities
 
-- Status: Accepted for the first implementation slice
+- Status: Superseded by ADR 0005
 - Date: 2026-08-31
 - Evidence epoch: 2026-08-31
 
 ## Decision
+
+This record is retained as historical context. ADR 0005 controls the current
+GitHub Pages-only public program; none of the future routing described below is
+active roadmap.
 
 The ecosystem surfaces have distinct responsibilities:
 

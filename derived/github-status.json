@@ -1,5 +1,5 @@
 {
-  "schema": "https://vesserith.xyz/schemas/github-status-snapshot-v1.json",
+  "schema": "https://wadewolfie999.github.io/Vesserith/schemas/github-status-snapshot-v1.json",
   "generatedAt": null,
   "source": "checked-in-fallback",
   "status": "unavailable",
@@ -17,15 +17,6 @@
       "projectId": "mynyra",
       "repository": "https://github.com/wadewolfie999/Mynyra",
       "reviewedRevision": "3c02009897dd552f1a0592afe15c602baa882aea",
-      "observedDefaultBranch": null,
-      "observedDefaultRevision": null,
-      "observedAt": null,
-      "state": "unavailable"
-    },
-    {
-      "projectId": "nyvora",
-      "repository": "https://github.com/wadewolfie999/Nyvora",
-      "reviewedRevision": "dbb7d087dbf4b56e4ba193c3ca93cc3ae918ef63",
       "observedDefaultBranch": null,
       "observedDefaultRevision": null,
       "observedAt": null,

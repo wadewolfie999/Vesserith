@@ -1,18 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://vesserith.xyz/schemas/ecosystem-registry-v1.json",
+  "$id": "https://wadewolfie999.github.io/Vesserith/schemas/ecosystem-registry-v1.json",
   "title": "Vesserith ecosystem registry",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema", "evidenceEpoch", "projects"],
   "properties": {
     "schema": {
-      "const": "https://vesserith.xyz/schemas/ecosystem-registry-v1.json"
+      "const": "https://wadewolfie999.github.io/Vesserith/schemas/ecosystem-registry-v1.json"
     },
     "evidenceEpoch": { "type": "string", "format": "date" },
     "projects": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 3,
+      "maxItems": 3,
       "items": { "$ref": "#/$defs/project" }
     }
   },
@@ -52,7 +53,7 @@
       ],
       "properties": {
         "id": {
-          "enum": ["vesserith", "mynyra", "nyvora", "hova", "wadewolfie"]
+          "enum": ["vesserith", "mynyra", "hova"]
         },
         "name": { "type": "string", "minLength": 1 },
         "mark": { "type": "string", "minLength": 1, "maxLength": 2 },
@@ -114,16 +115,11 @@
         "surfaces": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["repository", "wiki", "pages", "site", "domain"],
+          "required": ["repository", "wiki", "pages"],
           "properties": {
             "repository": { "$ref": "#/$defs/nullableHttpsUrl" },
             "wiki": { "$ref": "#/$defs/nullableHttpsUrl" },
-            "pages": { "$ref": "#/$defs/nullableHttpsUrl" },
-            "site": { "$ref": "#/$defs/nullableHttpsUrl" },
-            "domain": {
-              "type": "string",
-              "pattern": "^(?:[a-z0-9-]+\\.)*vesserith\\.xyz$"
-            }
+            "pages": { "$ref": "#/$defs/nullableHttpsUrl" }
           }
         },
         "boundaries": {

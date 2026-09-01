@@ -18,7 +18,7 @@ function clone() {
 void test('accepts the checked-in fail-soft GitHub snapshot', () => {
   const snapshot = validateGitHubStatusSnapshot(clone());
   assert.equal(snapshot.status, 'unavailable');
-  assert.equal(snapshot.entries.length, 4);
+  assert.equal(snapshot.entries.length, 3);
   assert.ok(snapshot.entries.every((entry) => entry.state === 'unavailable'));
 });
 
@@ -64,5 +64,14 @@ void test('rejects an empty snapshot', () => {
   assert.throws(
     () => validateGitHubStatusSnapshot(candidate),
     /must not be empty/,
+  );
+});
+
+void test('requires the complete minimal dashboard project set', () => {
+  const candidate = clone();
+  candidate.entries.pop();
+  assert.throws(
+    () => validateGitHubStatusSnapshot(candidate),
+    /must contain exactly vesserith, mynyra, hova/,
   );
 });
