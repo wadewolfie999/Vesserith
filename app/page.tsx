@@ -47,11 +47,8 @@ export default function Home() {
         >
           <a
             href={publicationPath('/')}
-            className="flex items-center gap-3 font-semibold tracking-tight"
+            className="font-semibold tracking-tight"
           >
-            <span className="grid size-9 place-items-center rounded-xl border border-cyan-900/15 bg-cyan-950 text-sm font-bold text-white shadow-[0_8px_24px_rgb(8_47_73/16%)]">
-              V
-            </span>
             <span>Vesserith</span>
           </a>
           <div className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">

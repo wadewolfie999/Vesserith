@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,6 +25,33 @@ const exitCode = await new Promise((resolveExit, reject) => {
 if (exitCode !== 0) process.exit(exitCode);
 
 const outputDirectory = resolve(root, 'dist/client');
+const requestedBasePath = process.env.VESSERITH_BASE_PATH?.trim() ?? '';
+const basePath =
+  requestedBasePath === '' || requestedBasePath === '/'
+    ? ''
+    : `/${requestedBasePath.replace(/^\/+|\/+$/g, '')}`;
+
+// Vinext writes assets below the configured base path when exporting. GitHub
+// Pages already mounts the uploaded directory at that base path, so keeping
+// the extra directory would make every /_next asset resolve one level too
+// deep (and leave the published HTML unstyled). Flatten the generated asset
+// tree before finalizing the Pages artifact.
+if (basePath) {
+  const nestedBasePathDirectory = resolve(outputDirectory, basePath.slice(1));
+  const nestedAssetDirectory = resolve(nestedBasePathDirectory, '_next');
+  const assetDirectory = resolve(outputDirectory, '_next');
+
+  try {
+    await cp(nestedAssetDirectory, assetDirectory, {
+      recursive: true,
+      force: true,
+    });
+    await rm(nestedBasePathDirectory, { recursive: true, force: true });
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+}
+
 const schemaDirectory = resolve(root, 'schemas');
 const publishedSchemaDirectory = resolve(outputDirectory, 'schemas');
 const schemaFiles = [

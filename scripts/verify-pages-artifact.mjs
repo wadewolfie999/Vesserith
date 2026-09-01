@@ -32,9 +32,24 @@ async function requireMissingFile(path) {
   throw new Error(`${path} must not be present in the Pages artifact`);
 }
 
+async function requireAsset(path) {
+  const assetPath = path.split(/[?#]/, 1)[0];
+  if (!assetPath.startsWith(`${basePath}/_next/`)) return;
+  await access(resolve(outputDirectory, assetPath.slice(basePath.length + 1)));
+}
+
 const home = await requireFile('index.html');
 const notFound = await requireFile('404.html');
 await requireFile('.nojekyll');
+
+const pages = [home, notFound];
+for (const id of projectIds) {
+  pages.push(await requireFile(`projects/${id}/index.html`));
+}
+for (const page of pages) {
+  const references = page.matchAll(/(?:href|src)="([^"]+)"/g);
+  for (const [, reference] of references) await requireAsset(reference);
+}
 
 for (const id of projectIds) {
   const detail = await requireFile(`projects/${id}/index.html`);
