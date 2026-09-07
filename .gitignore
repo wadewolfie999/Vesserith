@@ -36,3 +36,10 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# Private orientation data and isolated Python environment
+.local/
+.venv/
+__pycache__/
+*.pyc
+*.tsbuildinfo

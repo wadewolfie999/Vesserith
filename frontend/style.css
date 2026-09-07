@@ -1,0 +1,285 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #192938;
+  background: #edf1f5;
+  font-size: 16px;
+  line-height: 1.5;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1180px;
+  margin: auto;
+  padding: 24px 32px 60px;
+}
+header,
+.intro,
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #becad4;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.brand {
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+.version {
+  display: block;
+  font-size: 0.875rem;
+  color: #536676;
+}
+h1 {
+  font-size: 2.6rem;
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+h2,
+label {
+  font-size: 1rem;
+  font-weight: 650;
+}
+h2 {
+  margin: 0 0 12px;
+}
+p {
+  margin: 8px 0 12px;
+}
+.intro {
+  padding: 26px 0 20px;
+}
+.eyebrow {
+  font-size: 0.875rem;
+  color: #385e78;
+  margin: 0;
+}
+.quiet {
+  color: #526575;
+  font-size: 0.9rem;
+}
+.block {
+  display: block;
+}
+.strong {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+a {
+  color: #145685;
+}
+button,
+a {
+  font-size: 0.9rem;
+}
+button {
+  border: 1px solid #a6b9c8;
+  background: #fff;
+  color: #20435e;
+  border-radius: 7px;
+  padding: 9px 13px;
+  cursor: pointer;
+  font-weight: 600;
+}
+button:hover:not(:disabled) {
+  background: #e7f0f7;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+input,
+textarea,
+select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  border: 1px solid #a6b9c8;
+  border-radius: 6px;
+  background: #fff;
+  padding: 9px 10px;
+  margin: 6px 0 12px;
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: block;
+}
+input:focus,
+textarea:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #418cbd;
+  outline-offset: 2px;
+}
+.workspace {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.orientation {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 16px;
+}
+.orientation article,
+.shelves article {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #c8d3dc;
+  border-radius: 10px;
+}
+.orientation .objective {
+  border-top: 4px solid #245d89;
+}
+.orientation .action {
+  background: #e4edf5;
+}
+.shelves {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0 32px;
+}
+.shelves ul {
+  padding-left: 20px;
+  margin: 8px 0 16px;
+}
+.pill {
+  display: inline-block;
+  background: #e5ebf0;
+  color: #345067;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.entry {
+  border: 1px solid #becbd5;
+  background: white;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+.entry summary {
+  padding: 15px;
+  cursor: pointer;
+}
+.entry summary span + span {
+  margin-left: 14px;
+}
+.entry-form {
+  padding: 8px 20px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 18px;
+}
+.wide {
+  grid-column: 1/-1;
+}
+.section-title {
+  align-items: baseline;
+}
+.savebar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: #edf1f5;
+  border-top: 2px solid #bccbd8;
+  padding: 18px 0;
+  margin-top: 24px;
+}
+.savebar label {
+  flex: 1;
+  min-width: 230px;
+}
+.savebar input {
+  margin-bottom: 0;
+}
+.savebar span {
+  font-size: 0.9rem;
+}
+.primary {
+  background: #245d89;
+  color: #fff;
+}
+.primary:hover:not(:disabled) {
+  background: #194668;
+}
+.error {
+  background: #fff0eb;
+  border: 1px solid #aa5035;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.panel {
+  margin-top: 28px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #c8d3dc;
+  border-radius: 8px;
+}
+.panel summary {
+  cursor: pointer;
+  padding: 10px 0;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+fieldset:disabled {
+  opacity: 0.8;
+}
+@media (max-width: 760px) {
+  main {
+    padding: 18px 16px 40px;
+  }
+  header,
+  .intro,
+  .section-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .orientation,
+  .shelves,
+  .entry-form {
+    grid-template-columns: 1fr;
+  }
+  .wide {
+    grid-column: auto;
+  }
+  .entry summary span + span {
+    margin: 8px 0 0;
+    display: block;
+  }
+  .savebar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

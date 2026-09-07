@@ -1,24 +1,17 @@
 {
-  "name": "vesserith-hub",
+  "name": "vesserith",
   "version": "0.1.0",
   "private": true,
-  "description": "Public evidence map and navigation layer for the Vesserith ecosystem.",
+  "description": "Local personal orientation",
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "build:pages": "node scripts/build-pages.mjs",
-    "start": "wrangler dev --config dist/server/wrangler.json",
-    "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "validate:registry": "node --experimental-strip-types scripts/validate-registry.ts",
-    "refresh:github": "node scripts/refresh-github-status.mjs",
-    "verify:public": "node scripts/check-public-surface.mjs",
-    "verify:pages": "node scripts/verify-pages-artifact.mjs",
-    "smoke": "node scripts/smoke-site.mjs",
-    "lint": "oxlint",
-    "format": "oxfmt"
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "start": ".venv/bin/python -m backend.cli serve",
+    "test": ".venv/bin/python -m unittest discover -s backend/tests -v",
+    "lint": "oxlint frontend"
   },
   "dependencies": {
     "react": "19.2.8",
