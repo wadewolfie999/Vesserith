@@ -1,83 +1,65 @@
 # Vesserith
 
-Vesserith is a public GitHub Pages evidence dashboard for Vesserith, Mynyra,
-and Hova.
+A local personal orientation app. Open it to recover your objective, current
+focus, constraints, possible next action, and deliberately postponed work.
+Uncertainty and waiting are valid states. Recording an action never executes it.
 
-This repository deliberately does not own product runtime state, credentials,
-private records, trading authority, or a shared product database.
+## Run locally
 
-## Local development
-
-Requirements: Node.js 22.13 or newer and npm.
-
-```sh
-npm install
-npm run dev
-```
-
-The local site is normally available at `http://localhost:3000`.
-
-## Verification
-
-Run the checks independently so a failure remains attributable:
+Requirements: Python 3.12 with venv support, Node.js >=22.13, and npm.
+Install project dependencies without changing system packages:
 
 ```sh
-npm run validate:registry
-npm test
-npm run verify:public
-npm run lint
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+npm ci
 npm run build
-npm run smoke
+npm start
 ```
 
-`npm run smoke` expects the local development server to be running. Set
-`BASE_URL` only when testing an explicitly trusted preview origin.
+After the initial build, `./start.sh` starts the app without Node/npm.
+Open http://127.0.0.1:8765. Stop with Ctrl+C. The normal server is Waitress,
+not Flask's development server; it binds only to IPv4 loopback. No cloud account,
+authentication, telemetry, scheduled service, or automatic publication is used.
+The retired public dashboard remains in Git history at `3231d3c`.
 
-## GitHub Pages build
+For frontend development, keep `npm start` running and run `npm run dev` in a
+second terminal. Open http://127.0.0.1:5173; Vite proxies `/api` to Flask.
+The development frontend and normal frontend share the same local database.
+Back up valuable data before experiments; use `--database` with a separate
+file if an experiment should use disposable data.
 
-The first public release is live as a static GitHub Pages artifact at
-`https://wadewolfie999.github.io/Vesserith/`. A project-path build can be
-reproduced locally without publishing anything:
+## Data and contract
+
+Default data: `.local/orientation.sqlite3`, ignored by Git. Fresh checkouts start
+empty. Personal starting content is never bundled into JavaScript or source.
+The CLI creates owner-only files. Do not expose either port on a network.
+Localhost access has no authentication: other software running as your user can
+access the records. Host/origin checks reject cross-site browser requests.
+
+SQLite owns one orientation snapshot plus an append-only history of saved
+revisions. `backend/model.py` owns field validation and vocabulary; the frontend
+loads allowed choices from `/api/meta`. `backend/migrations/` owns the schema.
+A save transaction updates current state and history together. Revision checks
+reject stale-tab writes with HTTP 409; the browser retains its unsaved draft.
+There is no automatic merge. Copy your draft before reloading a conflicting tab.
+Unsaved input remains in memory, not durable storage; the browser warns before
+leaving. Save before closing or restarting. Context export includes saved state,
+explicit uncertainty and action origin/scope, plus the latest 20 change notes.
+History retains complete prior snapshots. No external files are opened by path.
+
+Only one entry may be Chosen, with both a next action and stopping point.
+Review dates are manual cues, not notifications or automatic transitions.
+A reason-only save records a decision or stopping note without changing focus.
+
+## Checks
 
 ```sh
-VESSERITH_BASE_PATH=/Vesserith \
-VESSERITH_PUBLIC_ORIGIN=https://wadewolfie999.github.io/Vesserith \
-VESSERITH_SOURCE_COMMIT=0000000000000000000000000000000000000000 \
-VESSERITH_BUILD_TIMESTAMP=2026-08-31T00:00:00Z \
-VESSERITH_BUILD_ENVIRONMENT=github-pages-local \
-npm run build:pages
-
-VESSERITH_BASE_PATH=/Vesserith \
-VESSERITH_SOURCE_COMMIT=0000000000000000000000000000000000000000 \
-npm run verify:pages
+npm test
+npm run build
+npm run lint
+.venv/bin/pip check
 ```
 
-The checked-in GitHub status snapshot is an unavailable fallback. The Pages
-workflow attempts to refresh it during each verified `main` publication.
-Lookup failures do not replace or invalidate the commit-pinned registry, and
-visitors never query GitHub directly.
-
-The public repository is `https://github.com/wadewolfie999/Vesserith`. GitHub
-Pages is configured to publish through Actions after validation on updates to
-`main`; manual workflow dispatch remains available for recovery.
-
-The four JSON schemas are copied into the Pages artifact under `/schemas/` so
-their public identifiers resolve from the canonical Pages URL.
-
-## Public contracts
-
-- `registry/projects.json` is the checked-in public ecosystem view.
-- `schemas/ecosystem-registry-v1.json` describes that registry.
-- `schemas/public-evidence-v1.json` describes future sanitized evidence.
-- `schemas/github-status-snapshot-v1.json` describes the derived, fail-soft
-  GitHub freshness snapshot.
-- `/.well-known/vesserith-build.json` exposes non-secret build provenance.
-
-The registry pins exact public source revisions. It does not make Vesserith
-canonical for the products it describes.
-
-## Current authorization boundary
-
-The GitHub Pages dashboard is public and read-only. It has no authentication,
-persistence, analytics, product API, operational control, private data, or
-external routing authority.
+See [the iteration record](docs/iterations/0.1.0.md),
+[versioning protocol](docs/VERSIONING.md), and [recovery](docs/RECOVERY.md).
