@@ -1,5 +1,14 @@
 # Changes
 
+## 0.2.1 — ultra-minimal copy
+
+The interface now favors short labels, data, and direct controls. Orientation
+semantics, complete release notes, and saved records are unchanged.
+
+- Removed repeated guidance and descriptive map copy.
+- Opening view now shows the objective, focus, and chosen action.
+- Kept schema 1; no migration is needed.
+
 ## 0.2.0 — orientation maps
 
 The opening screen now presents two navigable worlds: Thesis Worldmap and Mynyra

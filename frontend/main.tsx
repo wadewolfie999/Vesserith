@@ -147,7 +147,7 @@ function App() {
       setSaved(result);
       setDraft(result.document);
       setReason('');
-      setNotice('Saved on this machine.');
+      setNotice('Saved.');
     } catch (caught) {
       setError(String(caught));
     } finally {
@@ -160,7 +160,7 @@ function App() {
       <main className="loading-screen">
         <span className="brand-mark">V</span>
         <h1>Vesserith</h1>
-        <output>{error || 'Opening your orientation…'}</output>
+        <output>{error || 'Opening…'}</output>
         {error && (
           <button onClick={() => window.location.reload()}>Retry</button>
         )}
@@ -215,13 +215,15 @@ function App() {
     );
     setSelectedEntry(id);
     setEditing(true);
-    setNotice('Idea added as parked work. It is not active.');
+    setNotice('Parked.');
   }
 
   const waiting = draft.items.filter((item) => item.state === 'Waiting');
   const parked = draft.items.filter((item) => item.state === 'Set aside');
   const thesisEntries = draft.items.filter((item) => item.area === 'Thesis');
   const incomeEntries = draft.items.filter((item) => item.area === 'Income');
+  const chosenAction = draft.items.find((item) => item.state === 'Chosen')
+    ?.next_action;
   const selected = draft.items.find((item) => item.id === selectedEntry);
 
   return (
@@ -259,7 +261,7 @@ function App() {
             className="export-button"
             disabled={pending || busy}
             title={
-              pending ? 'Save first to export this orientation' : undefined
+              pending ? 'Save to export' : undefined
             }
             onClick={() => {
               window.location.href = '/api/export';
@@ -272,8 +274,8 @@ function App() {
 
       {error && (
         <div className="error-banner" role="alert">
-          <strong>Could not save that change.</strong> {error}
-          <span>Your edits remain on this page.</span>
+          <strong>Not saved.</strong> {error}
+          <span>Edits kept.</span>
         </div>
       )}
 
@@ -283,6 +285,7 @@ function App() {
             draft={draft}
             thesisCount={thesisEntries.length}
             incomeCount={incomeEntries.length}
+            chosenAction={chosenAction}
             onOpenMap={navigate}
             onEdit={() => setEditing(true)}
           />
@@ -301,27 +304,22 @@ function App() {
         {view === 'history' && (
           <RecordView
             title="History"
-            kicker="SAVED ORIENTATIONS"
             onBack={() => navigate('now')}
           >
-            <p className="record-intro">
-              Each checkpoint is a full orientation, kept so you can see what
-              you believed and chose at the time.
-            </p>
             {history?.map((entry) => (
               <details className="history-card" key={entry.revision}>
                 <summary>
                   <span className="history-revision">
-                    REVISION {entry.revision}
+                    #{entry.revision}
                   </span>
-                  <strong>{entry.reason || 'No reason supplied'}</strong>
+                  <strong>{entry.reason || 'No note'}</strong>
                   <time>{new Date(entry.recorded_at).toLocaleString()}</time>
                 </summary>
                 <div className="history-snapshot">
-                  <span>Main objective</span>
-                  <p>{entry.document.objective || 'Not yet decided'}</p>
-                  <span>Current focus</span>
-                  <p>{entry.document.focus || 'Not yet decided'}</p>
+                  <span>Objective</span>
+                  <p>{entry.document.objective || 'Unset'}</p>
+                  <span>Focus</span>
+                  <p>{entry.document.focus || 'Unset'}</p>
                 </div>
               </details>
             ))}
@@ -330,13 +328,8 @@ function App() {
         {view === 'changes' && (
           <RecordView
             title="What changed"
-            kicker="RELEASE NOTES"
             onBack={() => navigate('now')}
           >
-            <p className="record-intro">
-              The app changes through explicit, recoverable iterations. Personal
-              entries remain separate from release history.
-            </p>
             <pre className="changes-copy">{changes}</pre>
           </RecordView>
         )}
@@ -360,17 +353,17 @@ function App() {
       {view !== 'history' && view !== 'changes' && (
         <section className="quick-rail" aria-label="Saved state">
           <div>
-            <span className="rail-label">SIGNAL</span>
+            <span className="rail-label">STATE</span>
             <strong>
               {pending
-                ? 'Unsaved changes'
-                : notice || `Saved · revision ${saved.revision}`}
+                ? 'Unsaved'
+                : notice || `Saved #${saved.revision}`}
             </strong>
           </div>
           <div>
             <span className="rail-label">WAITING</span>
             <strong>
-              {waiting.length ? waiting[0].title : 'Nothing pending'}
+              {waiting.length ? waiting[0].title : 'None'}
             </strong>
           </div>
           <div>
@@ -380,7 +373,7 @@ function App() {
             </strong>
           </div>
           <button onClick={add}>
-            Park an idea <span aria-hidden="true">＋</span>
+            Park idea <span aria-hidden="true">＋</span>
           </button>
         </section>
       )}
@@ -392,12 +385,14 @@ function NowView({
   draft,
   thesisCount,
   incomeCount,
+  chosenAction,
   onOpenMap,
   onEdit,
 }: {
   draft: Orientation;
   thesisCount: number;
   incomeCount: number;
+  chosenAction?: string;
   onOpenMap: (view: View) => void;
   onEdit: () => void;
 }) {
@@ -406,40 +401,21 @@ function NowView({
       <section className="now-hero">
         <div className="hero-copy">
           <span className="eyebrow">YOUR NOW</span>
-          <h1>
-            Two worlds.
-            <br />
-            <em>One orientation.</em>
-          </h1>
-          <p>
-            Choose the world that needs your attention. Keep the other visible
-            without letting it pull you into a loop.
-          </p>
+          <h1>Orientation</h1>
         </div>
         <div className="objective-slab">
           <div className="slab-topline">
-            <span>MAIN OBJECTIVE</span>
+            <span>OBJECTIVE</span>
             <button onClick={onEdit}>
-              Edit orientation <span aria-hidden="true">↗</span>
+              Edit <span aria-hidden="true">↗</span>
             </button>
           </div>
           <p>
-            {draft.objective || 'Write the objective that should stay visible.'}
+            {draft.objective || 'Unset'}
           </p>
-          <div className="slab-foot">
-            <span>DEFAULT PRIORITY</span>
-            <strong>{draft.priority || 'Not yet decided'}</strong>
-          </div>
         </div>
       </section>
       <section className="map-section">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">ORIENTATION MAPS</span>
-            <h2>Where do you need to look?</h2>
-          </div>
-          <span className="section-note">Click a map to enter it.</span>
-        </div>
         <div className="map-grid">
           <button
             className="map-card thesis-map"
@@ -457,17 +433,11 @@ function NowView({
               <i />
               <i />
             </div>
-            <span className="map-type">THESIS WORLD</span>
-            <h3>Thesis Worldmap</h3>
-            <p>
-              Research, delegated work, evidence recovery, and the open academic
-              horizon.
-            </p>
+            <h3>Thesis</h3>
             <div className="map-card-footer">
               <span>
-                {thesisCount} plotted signal{thesisCount === 1 ? '' : 's'}
+                {thesisCount} signal{thesisCount === 1 ? '' : 's'}
               </span>
-              <span>Enter map</span>
             </div>
           </button>
           <button
@@ -486,37 +456,23 @@ function NowView({
               <i />
               <i />
             </div>
-            <span className="map-type">INCOME WORLD</span>
-            <h3>Mynyra Worldmap</h3>
-            <p>
-              A single potential income path, its evidence, and the decision
-              that remains open.
-            </p>
+            <h3>Mynyra</h3>
             <div className="map-card-footer">
               <span>
-                {incomeCount} plotted signal{incomeCount === 1 ? '' : 's'}
+                {incomeCount} signal{incomeCount === 1 ? '' : 's'}
               </span>
-              <span>Enter map</span>
             </div>
           </button>
         </div>
       </section>
       <section className="orientation-strip">
         <div>
-          <span className="strip-label">CURRENT FOCUS</span>
-          <strong>{draft.focus || 'Not yet decided'}</strong>
+          <span className="strip-label">FOCUS</span>
+          <strong>{draft.focus || 'Unset'}</strong>
         </div>
         <div>
-          <span className="strip-label">OPEN LIMIT</span>
-          <strong>
-            {draft.constraints
-              ? draft.constraints.split('.')[0]
-              : 'No constraint recorded'}
-          </strong>
-        </div>
-        <div>
-          <span className="strip-label">NEXT ACTION</span>
-          <strong>Choose a worldmap to inspect it.</strong>
+          <span className="strip-label">ACTION</span>
+          <strong>{chosenAction || 'Unset'}</strong>
         </div>
       </section>
     </>
@@ -541,36 +497,26 @@ function WorldMapView({
   onEdit: () => void;
 }) {
   const thesis = area === 'thesis';
-  const title = thesis ? 'Thesis Worldmap' : 'Mynyra Worldmap';
-  const description = thesis
-    ? 'The academic track: objective, delegated work, and evidence that still needs to be recovered.'
-    : 'The income track: one possible route, completed comparison evidence, and an undecided continuation.';
+  const title = thesis ? 'Thesis' : 'Mynyra';
   const objective = thesis
     ? draft.objective
-    : 'Explore whether XAUUSD M1 trading can become a reproducible, feasible source of income.';
-  const centerLabel = thesis ? 'THESIS OBJECTIVE' : 'POTENTIAL INCOME PATH';
+    : 'XAUUSD M1 feasibility';
+  const centerLabel = thesis ? 'OBJECTIVE' : 'POTENTIAL PATH';
   return (
     <section
       className={`worldmap-view ${thesis ? 'thesis-world' : 'income-world'}`}
     >
       <div className="map-toolbar">
         <button className="back-button" onClick={onBack}>
-          ← Your NOW
+          ← Now
         </button>
-        <span className="map-status">
-          LIVE ORIENTATION · {thesis ? '01' : '02'}
-        </span>
       </div>
       <div className="world-title">
         <div>
-          <span className="eyebrow">
-            {thesis ? 'THESIS WORLD' : 'INCOME WORLD'}
-          </span>
           <h1>{title}</h1>
-          <p>{description}</p>
         </div>
         <button className="soft-button" onClick={onEdit}>
-          Edit map context <span aria-hidden="true">↗</span>
+          Edit <span aria-hidden="true">↗</span>
         </button>
       </div>
       <div className="map-layout">
@@ -581,7 +527,7 @@ function WorldMapView({
           <div className="map-node map-center-node">
             <span className="node-label">{centerLabel}</span>
             <strong>{objective}</strong>
-            <button onClick={onEdit}>Open context ↗</button>
+            <button onClick={onEdit}>Edit ↗</button>
           </div>
           {entries.map((entry, index) => (
             <button
@@ -591,23 +537,16 @@ function WorldMapView({
             >
               <span className="node-dot" aria-hidden="true" />
               <span className="node-label">
-                {entry.state === 'Considering'
-                  ? 'CONSIDERING · NOT COMMITTED'
-                  : entry.state.toUpperCase()}
+                {entry.state.toUpperCase()}
               </span>
               <strong>{entry.title}</strong>
-              <small>
-                {entry.next_action ||
-                  entry.uncertainty ||
-                  'Open the signal to inspect it.'}
-              </small>
             </button>
           ))}
           {!entries.length && (
             <div className="empty-map">
-              No signals plotted here yet.
+              No signals.
               <br />
-              <button onClick={onEdit}>Add context</button>
+              <button onClick={onEdit}>Add</button>
             </div>
           )}
         </div>
@@ -616,17 +555,7 @@ function WorldMapView({
             <EntryInspector entry={selected} onEdit={onEdit} />
           ) : (
             <>
-              <span className="eyebrow">MAP READING</span>
               <h2>Select a signal</h2>
-              <p>
-                Each node is a saved situation, possibility, or piece of work.
-                Open one to see its uncertainty and stopping point.
-              </p>
-              <div className="inspector-rule" />
-              <span className="inspector-label">CURRENT FOCUS</span>
-              <strong>{draft.focus || 'Not yet decided'}</strong>
-              <span className="inspector-label">CONSTRAINT</span>
-              <strong>{draft.constraints || 'Not yet decided'}</strong>
             </>
           )}
         </aside>
@@ -644,27 +573,24 @@ function EntryInspector({
 }) {
   return (
     <>
-      <span className="eyebrow">SELECTED SIGNAL</span>
       <h2>{entry.title}</h2>
       <span className="status-chip">
-        {entry.state === 'Considering'
-          ? 'Considering · not committed'
-          : entry.state}
+        {entry.state}
       </span>
       <div className="inspector-block">
-        <span className="inspector-label">POSSIBLE NEXT ACTION</span>
-        <p>{entry.next_action || 'No action recorded.'}</p>
+        <span className="inspector-label">NEXT</span>
+        <p>{entry.next_action || 'Unset'}</p>
       </div>
       <div className="inspector-block">
         <span className="inspector-label">UNCERTAINTY</span>
-        <p>{entry.uncertainty || 'No uncertainty recorded.'}</p>
+        <p>{entry.uncertainty || 'Unset'}</p>
       </div>
       <div className="inspector-block">
-        <span className="inspector-label">STOPPING POINT</span>
-        <p>{entry.stopping_point || 'Not defined.'}</p>
+        <span className="inspector-label">STOP</span>
+        <p>{entry.stopping_point || 'Unset'}</p>
       </div>
       <button className="soft-button full-button" onClick={onEdit}>
-        Edit this signal ↗
+        Edit ↗
       </button>
     </>
   );
@@ -698,8 +624,7 @@ function EditorPanel({
     <section className="editor-panel" aria-label="Edit orientation">
       <div className="editor-heading">
         <div>
-          <span className="eyebrow">EDITING CONTEXT</span>
-          <h2>{item ? item.title : 'Orientation context'}</h2>
+          <h2>{item ? item.title : 'Orientation'}</h2>
         </div>
         <button className="close-button" onClick={onClose}>
           Close <span aria-hidden="true">×</span>
@@ -708,7 +633,7 @@ function EditorPanel({
       {!item ? (
         <div className="context-editor">
           <label>
-            Main objective
+            Objective
             <textarea
               rows={3}
               value={draft.objective}
@@ -716,14 +641,14 @@ function EditorPanel({
             />
           </label>
           <label>
-            Default priority
+            Priority
             <input
               value={draft.priority}
               onChange={(event) => onField('priority', event.target.value)}
             />
           </label>
           <label>
-            Current focus
+            Focus
             <textarea
               rows={2}
               value={draft.focus}
@@ -731,7 +656,7 @@ function EditorPanel({
             />
           </label>
           <label>
-            Constraints and open limits
+            Limits
             <textarea
               rows={3}
               value={draft.constraints}
@@ -742,7 +667,7 @@ function EditorPanel({
       ) : (
         <div className="context-editor">
           <label>
-            Signal title
+            Title
             <input
               value={item.title}
               onChange={(event) =>
@@ -751,7 +676,7 @@ function EditorPanel({
             />
           </label>
           <label>
-            Commitment or situation
+            State
             <select
               value={item.state}
               onChange={(event) =>
@@ -761,14 +686,14 @@ function EditorPanel({
               {meta.options.state.map((choice) => (
                 <option key={choice} value={choice}>
                   {choice === 'Considering'
-                    ? 'Considering — not committed'
+                    ? 'Considering'
                     : choice}
                 </option>
               ))}
             </select>
           </label>
           <label>
-            Possible next action
+            Next
             <textarea
               rows={2}
               value={item.next_action}
@@ -778,7 +703,7 @@ function EditorPanel({
             />
           </label>
           <label>
-            Stopping point
+            Stop
             <textarea
               rows={2}
               value={item.stopping_point}
@@ -788,7 +713,7 @@ function EditorPanel({
             />
           </label>
           <label className="editor-wide">
-            Uncertainty / decision notes
+            Uncertainty
             <textarea
               rows={3}
               value={item.uncertainty}
@@ -801,15 +726,15 @@ function EditorPanel({
       )}
       <div className="editor-footer">
         <label>
-          Reason or stopping note
+          Note
           <input
             value={reason}
             onChange={(event) => onReason(event.target.value)}
-            placeholder="What changed, why, or where you stopped"
+            placeholder="Optional"
           />
         </label>
         <button className="save-button" disabled={busy} onClick={onSave}>
-          {busy ? 'Saving…' : 'Save checkpoint'}{' '}
+          {busy ? 'Saving…' : 'Save'}{' '}
           <span aria-hidden="true">↗</span>
         </button>
       </div>
@@ -819,22 +744,19 @@ function EditorPanel({
 
 function RecordView({
   title,
-  kicker,
   onBack,
   children,
 }: {
   title: string;
-  kicker: string;
   onBack: () => void;
   children: ReactNode;
 }) {
   return (
     <section className="record-view">
       <button className="back-button" onClick={onBack}>
-        ← Your NOW
+        ← Now
       </button>
       <div className="record-heading">
-        <span className="eyebrow">{kicker}</span>
         <h1>{title}</h1>
       </div>
       <div className="record-content">{children}</div>
