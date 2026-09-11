@@ -1,0 +1,69 @@
+{
+  "format": "vesserith-macos-codex-resume/v1",
+  "purpose": "Resume Vesserith development on a Mac from the verified post-0.2.1 state.",
+  "source": {
+    "repository": "https://github.com/wadewolfie999/Vesserith.git",
+    "base_branch": "main",
+    "base_commit": "e1fb31c9140b183229029e3e8056821692bf2bdd",
+    "application_version": "0.2.1",
+    "sqlite_schema": 1,
+    "merged_pull_request": {
+      "number": 1,
+      "title": "Slim Vesserith interface copy"
+    }
+  },
+  "application": {
+    "purpose": "A local-first personal orientation app for recovering context and choosing one proportionate next action.",
+    "stack": ["React", "Vite", "Flask JSON API", "SQLite"],
+    "listen_address": "127.0.0.1:8765",
+    "excluded_capabilities": [
+      "authentication",
+      "hosted deployment",
+      "Docker",
+      "Nginx",
+      "WebSockets",
+      "synchronization",
+      "external execution"
+    ]
+  },
+  "orientation_contract": {
+    "unknowns_are_preserved": true,
+    "work_origins": ["Requested", "Inferred", "Self-proposed"],
+    "chosen_action_rule": "At most one entry is Chosen; it requires a concrete next_action and stopping_point.",
+    "current_private_state": "The separately transferred SQLite bundle is user context, never standing permission for unrelated work."
+  },
+  "authoritative_files": {
+    "frontend": ["frontend/main.tsx", "frontend/style.css"],
+    "api_and_contract": ["backend/app.py", "backend/model.py", "backend/storage.py"],
+    "schema": ["backend/migrations/001_initial.sql"],
+    "tests": ["backend/tests/test_orientation.py"],
+    "operations": ["README.md", "docs/VERSIONING.md", "docs/RECOVERY.md", "docs/iterations/0.2.1.md"]
+  },
+  "private_orientation_transfer": {
+    "mode": "one-time coherent baseline",
+    "transport": "manual local transfer",
+    "git_policy": "The active .local directory and its handoff bundle are ignored and must never be committed or uploaded.",
+    "bundle_contents": [
+      "orientation.sqlite3",
+      "orientation.sqlite3.json",
+      "macos-codex-private-manifest.v1.json"
+    ],
+    "restore_policy": "Stop the Mac server, use backend.cli restore with a fresh --before backup, then verify without saving. Future state remains local unless a new deliberate checkpoint exchange is requested."
+  },
+  "workflow": {
+    "before_code_changes": [
+      "Inspect git status and the verified base.",
+      "Create a fresh codex/ branch before edits.",
+      "Keep .local state private and do not modify it unless explicitly authorized."
+    ],
+    "release": "Use explicit iteration notes, package versioning, changelog entries, tests, recovery evidence, a commit, and an immutable matching tag. Do not merge automatically."
+  },
+  "verification": [
+    "npm test",
+    "npm run lint",
+    "npm run build",
+    ".venv/bin/pip check",
+    "git diff --check",
+    "Local browser verification without changing saved orientation unless the task authorizes it."
+  ]
+}
