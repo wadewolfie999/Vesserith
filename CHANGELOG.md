@@ -1,5 +1,22 @@
 # Changes
 
+## 3.0.0 — unreleased
+
+- Account-based learning Observatory for the existing GitHub Pages address;
+  React/TypeScript/Vite replaces the superseded local orientation interface.
+- Identity-only GitHub OAuth through Supabase, private PostgreSQL state and RLS,
+  transactional RPCs, revisions, idempotent retries, account recovery drafts,
+  and reviewed Nightpath/Vesserith context imports.
+- Personal trail editor, English route codes, configurable gates, connections,
+  archive/restore/Trash, positioning, and confirmed curriculum resets.
+- Terrain, lenses, notes, guided MCP Concept Graph, Deferred guidance, and Route D
+  scenario. New accounts start neutral without the owner's learning context.
+- Lockfile-based Pages workflow and allow-listed static artifact verification.
+  Removed the unused Sites manifest; legacy sources and migration data remain.
+
+Release evidence: [v3 ledger](docs/V3_RELEASE.md). No production v3 deployment is
+claimed until its live acceptance gates are complete.
+
 ## 0.2.1 — ultra-minimal copy
 
 The interface now favors short labels, data, and direct controls. Orientation

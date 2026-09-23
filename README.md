@@ -1,65 +1,88 @@
 # Vesserith
 
-A local personal orientation app. Open it to recover your objective, current
-focus, constraints, possible next action, and deliberately postponed work.
-Uncertainty and waiting are valid states. Recording an action never executes it.
+A private learning observatory: a personal, editable trail with stages, gates,
+routes, mastery signals, and notes that follow your GitHub account.
+
+**v3.0.0 is in release verification; not yet released.** See
+[the release ledger](docs/V3_RELEASE.md) for evidence and remaining gates.
+
+## Architecture
+
+React/TypeScript/Vite serves public assets at the existing
+[GitHub Pages address](https://wadewolfie999.github.io/Vesserith/).
+Supabase supplies GitHub identity-only PKCE sign-in and private PostgreSQL state.
+Sign-in does not grant repository access. Each account starts with a neutral
+six-stage MCP trail, Gate A, and Routes A–D; no owner's progress or notes are seeded.
 
 ## Run locally
 
-Requirements: Python 3.12 with venv support, Node.js >=22.13, and npm.
-Install project dependencies without changing system packages:
+Use Node.js 24 LTS or later and npm. No Python service is needed for v3.
 
 ```sh
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
 npm ci
-npm run build
-npm start
+cp .env.example .env.local
+npm run dev
 ```
 
-After the initial build, `./start.sh` starts the app without Node/npm.
-Open http://127.0.0.1:8765. Stop with Ctrl+C. The normal server is Waitress,
-not Flask's development server; it binds only to IPv4 loopback. No cloud account,
-authentication, telemetry, scheduled service, or automatic publication is used.
-The retired public dashboard remains in Git history at `3231d3c`.
+Open `http://127.0.0.1:4180/Vesserith/`; stop with Ctrl+C. `./start.sh`
+runs the same server. An occupied port fails without terminating another process.
+This preview uses **real account data** in the dedicated Supabase project.
 
-For frontend development, keep `npm start` running and run `npm run dev` in a
-second terminal. Open http://127.0.0.1:5173; Vite proxies `/api` to Flask.
-The development frontend and normal frontend share the same local database.
-Back up valuable data before experiments; use `--database` with a separate
-file if an experiment should use disposable data.
+Only the project URL and publishable key belong in frontend variables. Never add
+database passwords, service-role keys, or OAuth secrets to `VITE_*` variables.
+Supabase holds the OAuth secret. Production and local redirect URLs are exact;
+wildcard redirects are not needed.
 
-## Data and contract
+## State and recovery
 
-Default data: `.local/orientation.sqlite3`, ignored by Git. Fresh checkouts start
-empty. Personal starting content is never bundled into JavaScript or source.
-The CLI creates owner-only files. Do not expose either port on a network.
-Localhost access has no authentication: other software running as your user can
-access the records. Host/origin checks reject cross-site browser requests.
+Supabase is authoritative. Account reads use RLS; writes go through owner-checking,
+transactional RPCs. Direct table writes and anonymous reads are denied. Per-field
+revisions merge independent edits; conflicts require review. Request IDs make
+retries idempotent. Notes retain account-scoped recovery drafts on input and save
+after 300 ms idle, or two seconds of continuous typing. Refocus/reconnect and
+visible two-second polling fetch changes without replacing an active editor.
 
-SQLite owns one orientation snapshot plus an append-only history of saved
-revisions. `backend/model.py` owns field validation and vocabulary; the frontend
-loads allowed choices from `/api/meta`. `backend/migrations/` owns the schema.
-A save transaction updates current state and history together. Revision checks
-reject stale-tab writes with HTTP 409; the browser retains its unsaved draft.
-There is no automatic merge. Copy your draft before reloading a conflicting tab.
-Unsaved input remains in memory, not durable storage; the browser warns before
-leaving. Save before closing or restarting. Context export includes saved state,
-explicit uncertainty and action origin/scope, plus the latest 20 change notes.
-History retains complete prior snapshots. No external files are opened by path.
+Sign-out flushes writes or offers a private recovery export. Expired sessions keep
+drafts scoped to the original user. Use **Account → Export my context** before
+major edits; exports include pending recovery work and must be kept private.
 
-Only one entry may be Chosen, with both a next action and stopping point.
-Review dates are manual cues, not notifications or automatic transitions.
-A reason-only save records a decision or stopping note without changing focus.
+**Import context** previews changes and retains conflicting account values by
+default, including empty notes. It accepts `mcp-nightpath.context.v1` and
+`vesserith.context.v1`. Pages cannot read the older Sites origin's storage:
+export from that origin or the old localhost app, then review the file here.
+The old Site, browser entries, and Mac SQLite database remain intact.
 
-## Checks
+## Verification
 
 ```sh
+npm run check
 npm test
 npm run build
-npm run lint
-.venv/bin/pip check
+npm run verify:artifact
 ```
 
-See [the iteration record](docs/iterations/0.1.0.md),
-[versioning protocol](docs/VERSIONING.md), and [recovery](docs/RECOVERY.md).
+Database tests run migrations in embedded PostgreSQL (PGlite) with stubbed auth
+identities. Store/WebMCP unit tests use isolated service stubs. These are distinct
+from real OAuth, two-account isolation, and cross-browser acceptance evidence.
+
+For destructive UI testing, run `node tests/fixture-server.mjs` alongside Vite and
+open `http://127.0.0.1:4180/Vesserith/tests/workspace.html`. This developer-only
+fixture has an ephemeral database and simulated identity, never real learner data.
+Restarting it discards fixture state. It is excluded from the production build.
+
+## Publishing and rollback
+
+[The Pages workflow](.github/workflows/pages.yml) installs the lockfile, checks,
+tests, builds, and verifies an allow-listed `dist`. Pull requests cannot deploy.
+Main commits or explicit main dispatches deploy via the existing `github-pages`
+environment with minimal Pages/OIDC permissions and serialized deployment.
+
+Apply reviewed immutable [migrations](supabase/migrations) before dependent
+frontend releases. Never rerun applied files; their hashes are in the release
+ledger. No Sites project or local database is part of v3 publishing.
+
+Pre-v3 source is preserved at `7f6291b89391780a5ec9a3d4650c945bd13e0bfb`.
+Retained `backend/`, `requirements.txt`, and older recovery/iteration documents
+describe the superseded local orientation app. Do not run that backend against
+the v3 build. See [ADR 0008](docs/adr/0008-v3-private-trails.md) for account and
+recovery boundaries. Frontend rollback never deletes account data or reverses SQL.
