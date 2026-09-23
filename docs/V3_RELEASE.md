@@ -1,6 +1,8 @@
 # Vesserith v3.0.0 — implementation ledger
 
-Status: UNRELEASED. Code, local tests, provider setup, and live acceptance are separate gates.
+Status: RELEASED. The deployed application completed real GitHub sign-in,
+account persistence, and two-account acceptance at the existing production URL.
+Local/stub evidence and live evidence are distinguished below.
 
 ## Immutable starting points
 
@@ -13,15 +15,15 @@ Status: UNRELEASED. Code, local tests, provider setup, and live acceptance are s
 
 ## Delivery gates
 
-- [ ] React Observatory shell, /Vesserith/ subpath, hash navigation, English route codes.
-- [ ] Supabase migrations and RPC isolation validated in PostgreSQL.
-- [ ] GitHub identity-only OAuth and persistent PKCE sessions configured.
-- [ ] Private state, recovery drafts, revisions, conflicts, and reviewed imports.
-- [ ] Editable personal graph, gates, archive/trash, layout, resets.
-- [ ] Browser accessibility, layouts, learning regressions, WebMCP.
-- [ ] Two real accounts demonstrate isolation; Chrome and in-app browser demonstrate synchronization.
-- [ ] Reviewed migrations applied to dedicated project.
-- [ ] Exact verified commit deployed by GitHub Actions; live auth and persistence verified.
+- [x] React Observatory shell, /Vesserith/ subpath, hash navigation, English route codes.
+- [x] Supabase migrations and RPC isolation validated in PostgreSQL.
+- [x] GitHub identity-only OAuth and persistent PKCE sessions configured.
+- [x] Private state, recovery drafts, revisions, conflicts, and reviewed imports.
+- [x] Editable personal graph, gates, archive/trash, layout, resets.
+- [x] Browser accessibility, layouts, learning regressions, WebMCP.
+- [x] Two real accounts demonstrate isolation; Chrome and in-app browser demonstrate synchronization.
+- [x] Reviewed migrations applied to dedicated project.
+- [x] Exact verified commit deployed by GitHub Actions; live auth and persistence verified.
 
 ## Architecture boundaries
 
@@ -31,9 +33,11 @@ GitHub Pages contains public code and the sign-in screen only. Supabase is the s
 
 Do not deploy an unconfigured authentication screen over the existing site. Keep the pre-v3 commit as the frontend rollback reference. Applied database migrations are append-only; take a provider backup before production migration. Browser drafts stay under their original account namespace. A context export is private and must never be committed or uploaded as a Pages asset.
 
-## Pending evidence
+## Evidence chronology
 
-Source commit, applied migration IDs, Actions run, timestamp, production verification, and rollback deployment instructions will be recorded only when observed. At initialization no v3 deployment has occurred.
+The sections below retain the order of provider setup, local acceptance, and
+production verification. No deployment was claimed during the earlier stages.
+Observed release identifiers and recovery procedures are recorded at the end.
 
 ## Provider setup and schema installation
 
@@ -49,7 +53,7 @@ Source commit, applied migration IDs, Actions run, timestamp, production verific
 | `202609180002_transactional_mutations.sql` | `1a40541ca9a7a45cad7349b9b7e7b87a677741e3f5f5d9c70308da93f4446a94` |
 | `202609180003_reviewed_imports.sql` | `2f8e5b6c0fc14fa369d58ed66bc16108ddd25873a65dd09066fc3058643344ee` |
 
-Local evidence so far: TypeScript check, production build, artifact allow-list check, and 36 automated tests pass. Database tests execute PostgreSQL through PGlite with stubbed auth identities; real browser-account evidence is recorded separately below. No v3 GitHub Pages deployment has occurred.
+Local evidence: TypeScript check, production build, artifact allow-list check, and 36 automated tests pass. Database tests execute PostgreSQL through PGlite with stubbed auth identities; real browser-account evidence is recorded separately below. Deployment had not occurred at this stage.
 
 Hosted post-install permission audit: **11 tables**, `all_rls_enabled=true`, `anon_denied=true`, `direct_writes_denied=true`. The SQL editor's subsequent attempted replacement retained earlier buffer content; the repeated execution warning was cancelled without execution. A fresh query containing only the permission SELECT produced this audit. Do not rerun the initial installation; use a fresh query for later checks.
 
@@ -61,8 +65,8 @@ Hosted post-install permission audit: **11 tables**, `all_rls_enabled=true`, `an
 - **Real persistence:** the temporary Unicode/multiline/literal-HTML note saved on 18 September survived session restoration on 23 September. It was subsequently cleared through the editor and the empty value was observed in the other browser. No test note was imported into a new account.
 - **Browser fixtures:** real application components with a disposable PGlite-backed account, never a production identity. Both Concept Graph views, all seven steps, Restart, Escape, concept-to-Notes focus, note expansion/collapse preserving selection, literal text, mastery radios, and expanded Deferred guidance exercised. Creating and saving Stage 06 → Gate B → Route E succeeded. Archiving the required stage changed Gate B to “Prerequisite unavailable”; restore retained its saved connections.
 - **Measured reflow:** fixed CSS-pixel frames, not a nominal viewport affected by browser zoom. 1440 × 1106, 969 × 1106, and 320 × 1106. Concept graph passed text bounds, control clipping and node/label intersection checks at normal size and 32px root text (200%). A narrow enlarged-label defect was reproduced and fixed using wrapping, not hidden overflow. The 320px Explain toolbar is approximately 340px tall at default text size. Measurements wait for SVG reflow to settle.
-- **Reduced motion:** switching the preference while the page is open changes the highlight's computed transition duration to `0s`. Runtime cancellation of existing animations is implemented separately from CSS; full live-animation cancellation proof remains to be completed.
-- **Private migration source:** read-only SQLite snapshot of the original saved local store, revision 14, exported outside the repository with mode 0600. Six nonempty notes are present. All 18 source ratings are Independent, newer than the earlier Stage 01 reference checkpoint. Import review is pending; this snapshot explicitly does not claim to capture unsent drafts in old browser origins. The database and original browser copies remain untouched.
+- **Reduced motion:** switching the preference while the page is open changes the highlight's computed transition duration to `0s`. The subsequent runtime check below verifies cancellation independently of CSS.
+- **Private migration source:** read-only SQLite snapshot of the original saved local store, revision 14, exported outside the repository with mode 0600. Six nonempty notes are present. All 18 source ratings are Independent, newer than the earlier Stage 01 reference checkpoint. Import review was pending here and completed below; this snapshot explicitly does not claim to capture unsent drafts in old browser origins. The database and original browser copies remain untouched.
 
 ### Defects repaired during verification
 
@@ -73,7 +77,7 @@ Hosted post-install permission audit: **11 tables**, `all_rls_enabled=true`, `an
 - Earlier/Later ordering now swaps positions deterministically instead of generating tied order values. Displayed stage numbers follow saved order.
 - Enlarged graph labels and view controls wrap without losing words; compact lens labels remain intact.
 
-### Still-open release gates
+### Gates carried forward from the initial verification
 
 - Finish the remaining editor, concurrency/failure, focus and visual checks; record limitations without upgrading fixture evidence to real-account proof.
 - Complete reviewed owner-context import and confirm all six note values against the private source.
@@ -91,4 +95,71 @@ The Pages environment permits deployment from `main` only. The workflow also ver
 - The developer fixture now disposes its store during hot replacement and preserves server validation errors as such. This avoids stale test subscriptions and misleading offline messages in the test harness; it is not shipped.
 - TypeScript, all 36 tests, production build, and the four-file static artifact allow-list passed again after the repairs. Automated failure/expiry/IME cases and PostgreSQL auth stubs remain clearly distinct from real OAuth and browser evidence.
 
-Remaining release actions: commit and branch CI, verified main deployment, production sign-in/persistence/isolation, asset and console checks, then record release identifiers. No v3 production deployment is claimed yet.
+Those release actions were then completed as recorded below.
+
+## Confirmed production release
+
+| Evidence | Observed value |
+| --- | --- |
+| Application source commit | `ff51f691b4c157edc32325e3d012d2df3df3b279` |
+| Branch verification | [35923230995](https://github.com/wadewolfie999/Vesserith/actions/runs/35923230995), success; deployment skipped |
+| Main verification and publication | [35923545001](https://github.com/wadewolfie999/Vesserith/actions/runs/35923545001), both jobs successful |
+| GitHub Pages deployment | `6624999152` |
+| Successful deployment status | **2026-09-23 21:37:42 UTC** |
+| Confirmed URL | https://wadewolfie999.github.io/Vesserith/ |
+| Backend migrations | `202609180001`, `202609180002`, `202609180003`, `202609230004`; hashes above |
+
+The user paused execution after publication had been initiated. Deployment
+completed independently. On explicit resume, the successful terminal status was
+read from GitHub before production acceptance continued. No duplicate website or
+replacement repository was created. Sites and the legacy local database were
+not modified by this release.
+
+### Live acceptance after deployment
+
+- Signed-out production entry contains the public sign-in screen, not the learning workspace. Owner OAuth returned successfully to `/Vesserith/`; the account menu confirmed the owner identity, Gate A readiness, and account save status.
+- All six production note values exactly matched the private migration source. Logout hid the workspace. Relogin and reload restored account data and durable selection. Hash-based waypoint URLs loaded without a server routing error.
+- The second real GitHub identity signed into production in Chrome with its own neutral curriculum and six empty notes. Its temporary Unicode/multiline/HTML-like note survived reload; intentional clearing then survived another reload. The owner notes remained separate. Earlier authenticated foreign-read/write probes against this same hosted backend passed in both directions; the development audit page was never published.
+- Both production Concept Graph views advanced through all seven steps. The Notes transition focused the existing Stage 01 editor without changing its text. All four lenses and Routes A–D worked; Route D content and the five Deferred categories rendered.
+- Fresh production reload produced no `Runtime.exceptionThrown` or browser `Log.entryAdded` errors. Both native WebMCP tools were advertised at the production origin. Native valid/invalid tool executions were verified earlier against the same hosted account service; additional unit tests use an explicitly isolated stub.
+- All four public files returned HTTP 200 and matched the local verified build byte-for-byte. The artifact contains only the static sign-in/application assets; private notes, databases, migration snapshots, and development fixtures are absent.
+- A development-only motion probe loaded the actual app bootstrap. Before changing the preference it observed a running Web Animation; switching to reduced motion yielded `animation: idle` and `running: 0`. The emulated preference was restored and the probe tab closed. The probe is excluded from `dist`.
+
+Artifact SHA-256 values (documentation/test-only follow-ups leave these unchanged):
+
+| File | SHA-256 |
+| --- | --- |
+| `index.html` | `cfbeed5d30482f6c845de21a669820fa181a3e8f0070c1ee81748dd47f641b48` |
+| `vesserith.svg` | `ff17bef3693ac503fad7096f031e3d1fed03b3cbacdbce79aaaad1e74f8bc39c` |
+| `assets/index-B5QNzd7l.js` | `0a9b4d9c65c1332970bbde923d7454a9a8c08b4bb2186fdceca77b981f509905` |
+| `assets/index-GysagPn6.css` | `c718de5a31fadd420a33aa2777b2b4690cfbf9026976cacdde195e717ac3d94d` |
+
+### Evidence limits
+
+- Cross-browser updates were observed, and visible polling runs every two seconds; an exact end-to-end network-latency guarantee was not benchmarked.
+- Expiry, storage failure, lost acknowledgments, conflicting edits, composition handling, and concurrent topology changes are covered by isolated automated tests. Do not describe every simulated fault as a production outage experiment.
+- The migration includes saved SQLite state, not unidentified unsent drafts in old browser origins. Original copies remain available for any later reviewed import.
+- This is functional and account-isolation verification, not an independent penetration test or sustained 20-user load test.
+
+## Operational handoff and rollback
+
+Use the Pages URL and sign into the same GitHub account in each browser. V3's
+localhost preview and Pages app share that Supabase account; the old Nightpath
+localhost service and old Sites origin do not. Account exports are private.
+
+For an ordinary frontend regression, use a clean checkout of this verified
+application commit and the existing main-only Pages workflow, then repeat the
+asset and sign-in smoke checks. Prefer a reviewed forward-fix or ordinary revert
+commit; do not force-reset shared history.
+
+If returning to the pre-v3 product is explicitly chosen, preserve current account
+exports first. The pre-v3 repository reference is
+`7f6291b89391780a5ec9a3d4650c945bd13e0bfb`; the last observed successful older
+Pages deployment used `3231d3c64e3bc9993b638c59e2b224b9723875b5`, run
+`33561213686`, deployment `6210693765`. Build the selected historical static
+frontend in an isolated checkout and validate it before publishing through the
+existing Pages environment. Historical build dependencies may need review.
+
+A frontend rollback must not drop Supabase tables, reverse applied migrations,
+delete user data, or restore the old local database over account storage. Future
+SQL changes are append-only and require their own backup and validation plan.

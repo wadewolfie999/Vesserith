@@ -3,8 +3,9 @@
 A private learning observatory: a personal, editable trail with stages, gates,
 routes, mastery signals, and notes that follow your GitHub account.
 
-**v3.0.0 is in release verification; not yet released.** See
-[the release ledger](docs/V3_RELEASE.md) for evidence and remaining gates.
+**Vesserith v3.0.0 is released** at the existing
+[GitHub Pages site](https://wadewolfie999.github.io/Vesserith/). See
+[the release ledger](docs/V3_RELEASE.md) for deployment and verification evidence.
 
 ## Architecture
 

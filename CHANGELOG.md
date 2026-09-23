@@ -1,6 +1,6 @@
 # Changes
 
-## 3.0.0 — unreleased
+## 3.0.0 — 2026-09-23 UTC
 
 - Account-based learning Observatory for the existing GitHub Pages address;
   React/TypeScript/Vite replaces the superseded local orientation interface.
@@ -14,8 +14,13 @@
 - Lockfile-based Pages workflow and allow-listed static artifact verification.
   Removed the unused Sites manifest; legacy sources and migration data remain.
 
-Release evidence: [v3 ledger](docs/V3_RELEASE.md). No production v3 deployment is
-claimed until its live acceptance gates are complete.
+Released at the existing GitHub Pages URL. Application source:
+`ff51f691b4c157edc32325e3d012d2df3df3b279`; successful publishing run
+[35923545001](https://github.com/wadewolfie999/Vesserith/actions/runs/35923545001),
+deployment `6624999152`, confirmed **2026-09-23 21:37:42 UTC**.
+Production GitHub sign-in, logout/relogin, private two-account state, note
+persistence/clearing, six imported owner notes, assets, and console were verified
+after deployment. Full evidence and its limits: [v3 ledger](docs/V3_RELEASE.md).
 
 ## 0.2.1 — ultra-minimal copy
 
